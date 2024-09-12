@@ -13,6 +13,11 @@ class Sliplink:
     Represents a link between two nodes with an optional label and fixed length.
     """
 
+    source: Slipnode
+    destination: Slipnode
+    label: Optional[Slipnode]
+    fixed_length: float
+
     def __init__(
         self,
         source: Slipnode,
