@@ -42,7 +42,7 @@ class StatusFrame(ttk.Frame):
         self.status = status
 
         self.canvas = FigureCanvasTkAgg(status.figure, self)
-        self.canvas.show()
+        self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
         self.animation = animation.FuncAnimation(status.figure, lambda i : status.update_plots(i), interval=1000)
