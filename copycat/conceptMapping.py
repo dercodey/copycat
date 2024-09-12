@@ -31,7 +31,7 @@ class ConceptMapping(object):
             return 100.0
         for link in self.initialDescriptor.lateralSlipLinks:
             if link.destination == self.targetDescriptor:
-                return link.degreeOfAssociation()
+                return link.degree_of_association()
         return 0.0
 
     def strength(self):

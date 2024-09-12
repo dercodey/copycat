@@ -173,7 +173,7 @@ def similarPropertyLinks(ctx, slip_node):
     temperature = ctx.temperature
     result = []
     for slip_link in slip_node.propertyLinks:
-        association = slip_link.degreeOfAssociation() / 100.0
+        association = slip_link.degree_of_association() / 100.0
         # TODO:use entropy
         probability = temperature.getAdjustedProbability(association)
         if random.coinFlip(probability):
@@ -196,7 +196,7 @@ def bottom_up_description_scout(ctx, codelet):
     assert description
     sliplinks = similarPropertyLinks(ctx, description.descriptor)
     assert sliplinks
-    weights = [sliplink.degreeOfAssociation() * sliplink.destination.activation
+    weights = [sliplink.degree_of_association() * sliplink.destination.activation
                for sliplink in sliplinks]
     chosen = random.weighted_choice(sliplinks, weights)
     chosenProperty = chosen.destination
