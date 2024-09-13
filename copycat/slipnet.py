@@ -220,7 +220,7 @@ class Slipnet(object):
         source.categoryLinks += [link]
 
     def __addInstanceLink(self, source, destination, length=100.0):
-        categoryLength = source.conceptualDepth - destination.conceptualDepth
+        categoryLength = source.conceptual_depth - destination.conceptual_depth
         self.__addCategoryLink(destination, source, categoryLength)
         #noinspection PyArgumentEqualDefault
         link = self.__addLink(source, destination, None, length)

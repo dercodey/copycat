@@ -5,13 +5,13 @@ def jump_threshold():
     return 55.0
 
 
-class Slipnode(object):
+class Slipnode:
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, slipnet, name, depth, length=0.0):
+    def __init__(self, slipnet: 'Slipnet', name: str, depth: int, length: float = 0.0):
         self.slipnet = slipnet
         self.name = name
-        self.conceptualDepth = depth
-        self.intrinsicLinkLength = length
+        self.conceptual_depth = depth
+        self.intrinsic_link_length = length
         self.shrunkLinkLength = length * 0.4
 
         self.activation = 0.0
@@ -27,7 +27,7 @@ class Slipnode(object):
         self.codelets = []
 
     def __repr__(self):
-        return '<Slipnode: %s>' % self.name
+        return "<Slipnode: %s>" % self.name
 
     def reset(self):
         self.buffer = 0.0
@@ -55,14 +55,14 @@ class Slipnode(object):
         return self.activation > 100.0 - float_margin
 
     def bondDegreeOfAssociation(self):
-        linkLength = self.intrinsicLinkLength
+        linkLength = self.intrinsic_link_length
         if self.fully_active():
             linkLength = self.shrunkLinkLength
         result = math.sqrt(100 - linkLength) * 11.0
         return min(100.0, result)
 
     def degreeOfAssociation(self):
-        linkLength = self.intrinsicLinkLength
+        linkLength = self.intrinsic_link_length
         if self.fully_active():
             linkLength = self.shrunkLinkLength
         return 100.0 - linkLength
@@ -93,8 +93,9 @@ class Slipnode(object):
         slipnet = self.slipnet
         if relation == slipnet.identity:
             return self
-        destinations = [l.destination
-                        for l in self.outgoingLinks if l.label == relation]
+        destinations = [
+            l.destination for l in self.outgoingLinks if l.label == relation
+        ]
         if destinations:
             return destinations[0]
         return None
@@ -115,7 +116,7 @@ class Slipnode(object):
 
     def update(self):
         self.oldActivation = self.activation
-        self.buffer -= self.activation * (100.0 - self.conceptualDepth) / 100.0
+        self.buffer -= self.activation * (100.0 - self.conceptual_depth) / 100.0
 
     def spread_activation(self):
         if self.fully_active():

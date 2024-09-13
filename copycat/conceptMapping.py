@@ -42,8 +42,8 @@ class ConceptMapping(object):
         return association * (1 + depth * depth)
 
     def __conceptualDepth(self):
-        return (self.initialDescriptor.conceptualDepth +
-                self.targetDescriptor.conceptualDepth) / 2.0
+        return (self.initialDescriptor.conceptual_depth +
+                self.targetDescriptor.conceptual_depth) / 2.0
 
     def distinguishing(self):
         slipnet = self.slipnet

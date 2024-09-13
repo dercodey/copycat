@@ -22,7 +22,7 @@ class Description(WorkspaceStructure):
         return s
 
     def updateInternalStrength(self):
-        self.internalStrength = self.descriptor.conceptualDepth
+        self.internalStrength = self.descriptor.conceptual_depth
 
     def updateExternalStrength(self):
         self.externalStrength = (self.localSupport() +

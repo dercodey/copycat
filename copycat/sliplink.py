@@ -62,7 +62,7 @@ class Sliplink:
         if self.fixed_length > 1:
             return 100.0 - self.fixed_length
         if self.label:
-            return 100.0 - self.label.intrinsicLinkLength
+            return 100.0 - self.label.intrinsic_link_length
         return 0.0
 
     def spread_activation(self) -> None:

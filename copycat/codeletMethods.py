@@ -352,7 +352,7 @@ def rule_scout(ctx, codelet):
     # use conceptual depth to choose a description
     # TODO: use entropy
     weights = [
-        temperature.getAdjustedValue(node.conceptualDepth)
+        temperature.getAdjustedValue(node.conceptual_depth)
         for node in objectList
     ]
     descriptor = random.weighted_choice(objectList, weights)
@@ -365,7 +365,7 @@ def rule_scout(ctx, codelet):
     # TODO: use entropy
     # use conceptual depth to choose a relation
     weights = [
-        temperature.getAdjustedValue(node.conceptualDepth)
+        temperature.getAdjustedValue(node.conceptual_depth)
         for node in objectList
     ]
     relation = random.weighted_choice(objectList, weights)
@@ -964,7 +964,7 @@ def important_object_correspondence_scout(ctx, codelet):
     descriptors = objectFromInitial.relevantDistinguishingDescriptors()
     # choose descriptor by conceptual depth
     # TODO: use entropy
-    weights = [temperature.getAdjustedValue(n.conceptualDepth) for n in descriptors]
+    weights = [temperature.getAdjustedValue(n.conceptual_depth) for n in descriptors]
     slipnode = random.weighted_choice(descriptors, weights)
     assert slipnode
     initialDescriptor = slipnode

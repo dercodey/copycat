@@ -137,7 +137,7 @@ class Coderack(object):
                     if not random.coinFlip(probability):
                         continue
                     urgency = getUrgencyBin(
-                        node.activation * node.conceptualDepth / 100.0)
+                        node.activation * node.conceptual_depth / 100.0)
                     codelet = Codelet(codeletName, urgency, [node], self.codeletsRun)
                     logging.info('Post top down: %s, with urgency: %d',
                                  codelet.name, urgency)
@@ -191,7 +191,7 @@ class Coderack(object):
         rule = Rule(self.ctx, facet, description, category, relation)
         rule.updateStrength()
         if description and relation:
-            averageDepth = (description.conceptualDepth + relation.conceptualDepth) / 2.0
+            averageDepth = (description.conceptual_depth + relation.conceptual_depth) / 2.0
             urgency = 100.0 * math.sqrt(averageDepth / 100.0)
         else:
             urgency = 0
