@@ -14,7 +14,7 @@ class Slipnet(object):
         for node in self.slipnodes:
             node.reset()
         for node in self.initiallyClampedSlipnodes:
-            node.clampHigh()
+            node.clamp_high()
 
     def update(self, random):
         self.numberOfUpdates += 1

@@ -2,10 +2,13 @@
     "cSpell.words": [
         "avgtemp",
         "avgtime",
+        "Codelet",
+        "codelets",
         "noshow",
         "Sliplink",
         "Slipnet",
-        "Slipnode"
+        "Slipnode",
+        "unclamp"
     ],
     "python.analysis.typeCheckingMode": "basic"
 }

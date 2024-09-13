@@ -1,13 +1,63 @@
+"""
+This module defines the Slipnode class, which represents a node in the Slipnet.
+The Slipnode class includes attributes for activation, links to other nodes, and
+methods for managing these attributes.
+"""
+
 import math
+from typing import List, Optional
 
 
 def jump_threshold():
+    """Returns the jump threshold value."""
     return 55.0
 
 
 class Slipnode:
+    """
+    Represents a node in the Slipnet.
+
+    Attributes:
+        slipnet (Slipnet): The Slipnet to which this node belongs.
+        name (str): The name of the node.
+        conceptual_depth (float): The conceptual depth of the node.
+        intrinsic_link_length (float): The intrinsic link length of the node.
+        shrunk_link_length (float): The shrunk link length of the node.
+        activation (float): The activation level of the node.
+        buffer (float): The buffer value for the node.
+        clamped (bool): Indicates if the node's activation is clamped.
+        category_links (List[Sliplink]): List of category links from this node.
+        instance_links (List[Sliplink]): List of instance links from this node.
+        property_links (List[Sliplink]): List of property links from this node.
+        lateral_slip_links (List[Sliplink]): List of lateral slip links from this node.
+        lateral_non_slip_links (List[Sliplink]): List of lateral non-slip links from this node.
+        incoming_links (List[Sliplink]): List of incoming links to this node.
+        outgoing_links (List[Sliplink]): List of outgoing links from this node.
+        codelets (List[Codelet]): List of codelets associated with this node.
+    """
+
+    slipnet: "Slipnet"  # type: ignore  # noqa: F821
+    name: str
+    conceptual_depth: float
+    intrinsic_link_length: float
+    shrunk_link_length: float
+
+    activation: float = 0.0
+    buffer: float = 0.0
+    clamped: bool = False
+    category_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    instance_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    property_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    lateral_slip_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    lateral_non_slip_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    incoming_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    outgoing_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
+    codelets: List["Codelet"] = []  # type: ignore  # noqa: F821
+
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, slipnet: "Slipnet", name: str, depth: int, length: float = 0.0):
+    def __init__(
+        self, slipnet: "Slipnet", name: str, depth: float, length: float = 0.0  # type: ignore  # noqa: F821
+    ):
         self.slipnet = slipnet
         self.name = name
         self.conceptual_depth = depth
@@ -26,31 +76,51 @@ class Slipnode:
         self.outgoing_links = []
         self.codelets = []
 
-    def __repr__(self):
-        return "<Slipnode: %s>" % self.name
+    def __repr__(self) -> str:
+        return f"<Slipnode: {self.name}>"
 
-    def reset(self):
+    def reset(self) -> None:
+        """Resets the buffer and activation of the Slipnode."""
         self.buffer = 0.0
         self.activation = 0.0
 
-    def clampHigh(self):
+    def clamp_high(self) -> None:
+        """Clamps the activation of the Slipnode to a high value."""
         self.clamped = True
         self.activation = 100.0
 
-    def unclamp(self):
+    def unclamp(self) -> None:
+        """Unclamps the activation of the Slipnode."""
         self.clamped = False
 
-    def unclamped(self):
+    def unclamped(self) -> bool:
+        """
+        Checks if the Slipnode is unclamped.
+
+        Returns:
+            bool: True if the Slipnode is unclamped, False otherwise.
+        """
         return not self.clamped
 
-    def category(self):
-        if not len(self.category_links):
+    def category(self) -> Optional["Slipnode"]:
+        """
+        Returns the category of the Slipnode based on its category links.
+
+        Returns:
+            Optional[Slipnode]: The category Slipnode if it exists, otherwise None.
+        """        
+        if len(self.category_links) == 0:
             return None
         link = self.category_links[0]
         return link.destination
 
-    def fully_active(self):
-        """Whether this node has full activation"""
+    def fully_active(self) -> bool:
+        """
+        Whether this node has full activation
+
+        Returns:
+            bool: True if the Slipnode has full activation, False otherwise.
+        """        
         float_margin = 0.00001
         return self.activation > 100.0 - float_margin
 
