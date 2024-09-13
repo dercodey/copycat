@@ -172,7 +172,7 @@ def similarPropertyLinks(ctx, slip_node):
     # TODO: use entropy
     temperature = ctx.temperature
     result = []
-    for slip_link in slip_node.propertyLinks:
+    for slip_link in slip_node.property_links:
         association = slip_link.degree_of_association() / 100.0
         # TODO:use entropy
         probability = temperature.getAdjustedProbability(association)

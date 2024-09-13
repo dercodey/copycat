@@ -4,6 +4,7 @@
         "avgtime",
         "noshow",
         "Sliplink",
+        "Slipnet",
         "Slipnode"
     ],
     "python.analysis.typeCheckingMode": "basic"

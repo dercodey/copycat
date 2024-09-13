@@ -29,7 +29,7 @@ class ConceptMapping(object):
         # Assumes the 2 descriptors are connected in the slipnet by <= 1 link
         if self.initialDescriptor == self.targetDescriptor:
             return 100.0
-        for link in self.initialDescriptor.lateralSlipLinks:
+        for link in self.initialDescriptor.lateral_slip_links:
             if link.destination == self.targetDescriptor:
                 return link.degree_of_association()
         return 0.0

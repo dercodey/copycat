@@ -38,8 +38,8 @@ class Sliplink:
         self.destination = destination
         self.label = label
         self.fixed_length = length
-        source.outgoingLinks += [self]
-        destination.incomingLinks += [self]
+        source.outgoing_links += [self]
+        destination.incoming_links += [self]
 
     def degree_of_association(self) -> float:
         """

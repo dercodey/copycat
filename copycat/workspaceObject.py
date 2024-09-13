@@ -111,7 +111,7 @@ class WorkspaceObject(WorkspaceStructure):
         from .group import Group  # gross, TODO FIXME
         slipnet = self.ctx.slipnet
         descriptions = []
-        for link in descriptionType.instanceLinks:
+        for link in descriptionType.instance_links:
             node = link.destination
             if node == slipnet.first and self.described(slipnet.letters[0]):
                 descriptions += [node]

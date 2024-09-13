@@ -72,9 +72,9 @@ class Slipnet(object):
         self.right.codelets += ['top-down-group-scout--direction']
 
         # bond types
-        self.predecessor = self.__addNode('predecessor', 50.0, 60.0)
+        self.predecessor = self.__addNode('predecessor', 50.0, 60)
         self.predecessor.codelets += ['top-down-bond-scout--category']
-        self.successor = self.__addNode('successor', 50.0, 60.0)
+        self.successor = self.__addNode('successor', 50.0, 60)
         self.successor.codelets += ['top-down-bond-scout--category']
         self.sameness = self.__addNode('sameness', 80.0)
         self.sameness.codelets += ['top-down-bond-scout--category']
@@ -204,11 +204,11 @@ class Slipnet(object):
 
     def __addSlipLink(self, source, destination, label=None, length=0.0):
         link = self.__addLink(source, destination, label, length)
-        source.lateralSlipLinks += [link]
+        source.lateral_slip_links += [link]
 
     def __addNonSlipLink(self, source, destination, label=None, length=0.0):
         link = self.__addLink(source, destination, label, length)
-        source.lateralNonSlipLinks += [link]
+        source.lateral_non_slip_links += [link]
 
     def __addBidirectionalLink(self, source, destination, length):
         self.__addNonSlipLink(source, destination, length=length)
@@ -217,19 +217,19 @@ class Slipnet(object):
     def __addCategoryLink(self, source, destination, length):
         #noinspection PyArgumentEqualDefault
         link = self.__addLink(source, destination, None, length)
-        source.categoryLinks += [link]
+        source.category_links += [link]
 
     def __addInstanceLink(self, source, destination, length=100.0):
         categoryLength = source.conceptual_depth - destination.conceptual_depth
         self.__addCategoryLink(destination, source, categoryLength)
         #noinspection PyArgumentEqualDefault
         link = self.__addLink(source, destination, None, length)
-        source.instanceLinks += [link]
+        source.instance_links += [link]
 
     def __addPropertyLink(self, source, destination, length):
         #noinspection PyArgumentEqualDefault
         link = self.__addLink(source, destination, None, length)
-        source.propertyLinks += [link]
+        source.property_links += [link]
 
     def __addOppositeLink(self, source, destination):
         self.__addSlipLink(source, destination, label=self.opposite)
