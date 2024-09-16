@@ -117,7 +117,7 @@ class Bond(WorkspaceStructure):
         else:
             facetFactor = 0.7
         strength = min(100.0, memberCompatibility * facetFactor *
-                       self.category.bondDegreeOfAssociation())
+                       self.category.bond_degree_of_association())
         self.internalStrength = strength
 
     def updateExternalStrength(self):

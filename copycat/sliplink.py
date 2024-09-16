@@ -50,7 +50,7 @@ class Sliplink:
         """
         if self.fixed_length > 0 or not self.label:
             return 100.0 - self.fixed_length
-        return self.label.degreeOfAssociation()
+        return self.label.degree_of_association()
 
     def intrinsic_degree_of_association(self) -> float:
         """

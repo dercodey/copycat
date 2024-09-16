@@ -108,7 +108,7 @@ class Slipnode:
 
         Returns:
             Optional[Slipnode]: The category Slipnode if it exists, otherwise None.
-        """        
+        """
         if len(self.category_links) == 0:
             return None
         link = self.category_links[0]
@@ -120,36 +120,78 @@ class Slipnode:
 
         Returns:
             bool: True if the Slipnode has full activation, False otherwise.
-        """        
+        """
         float_margin = 0.00001
         return self.activation > 100.0 - float_margin
 
-    def bondDegreeOfAssociation(self):
-        linkLength = self.intrinsic_link_length
+    def bond_degree_of_association(self) -> float:
+        """
+        Calculates the bond degree of association for the Slipnode.
+
+        Returns:
+            float: The bond degree of association.
+        """
+        link_length: float = self.intrinsic_link_length
         if self.fully_active():
-            linkLength = self.shrunk_link_length
-        result = math.sqrt(100 - linkLength) * 11.0
+            link_length = self.shrunk_link_length
+        result = math.sqrt(100 - link_length) * 11.0
         return min(100.0, result)
 
-    def degreeOfAssociation(self):
-        linkLength = self.intrinsic_link_length
+    def degree_of_association(self) -> float:
+        """
+        Calculates the degree of association for the Slipnode.
+
+        Returns:
+            float: The degree of association.
+        """
+        link_length = self.intrinsic_link_length
         if self.fully_active():
-            linkLength = self.shrunk_link_length
-        return 100.0 - linkLength
+            link_length = self.shrunk_link_length
+        return 100.0 - link_length
 
-    def linked(self, other):
-        """Whether the other is among the outgoing links"""
-        return any(l.points_at(other) for l in self.outgoing_links)
+    def linked(self, other: "Slipnode") -> bool:
+        """
+        Checks if the Slipnode is linked to another Slipnode.
 
-    def slipLinked(self, other):
-        """Whether the other is among the lateral links"""
-        return any(l.points_at(other) for l in self.lateral_slip_links)
+        Args:
+            other (Slipnode): The other Slipnode to check.
 
-    def related(self, other):
-        """Same or linked"""
+        Returns:
+            bool: True if the Slipnode is linked to the other Slipnode, False otherwise.
+        """
+        return any(link.points_at(other) for link in self.outgoing_links)
+
+    def slip_linked(self, other: "Slipnode") -> bool:
+        """
+        Checks if the Slipnode is slip-linked to another Slipnode.
+
+        Args:
+            other (Slipnode): The other Slipnode to check.
+
+        Returns:
+            bool: True if the Slipnode is slip-linked to the other Slipnode, False otherwise.
+        """
+        return any(link.points_at(other) for link in self.lateral_slip_links)
+
+    def related(self, other: "Slipnode") -> bool:
+        """
+        Checks if the Slipnode is the same as or linked to another Slipnode.
+
+        Args:
+            other (Slipnode): The other Slipnode to check.
+
+        Returns:
+            bool: True if the Slipnode is the same as or linked to the other Slipnode, False otherwise.
+        """
         return self == other or self.linked(other)
 
-    def applySlippages(self, slippages):
+    def apply_slippages(self, slippages: List["ConceptMapping"]) -> "Slipnode": # type: ignore  # noqa: F821
+        """
+        Applies slippages to the Slipnode.
+
+        Args:
+            slippages (list): A list of slippages to apply.
+        """
         for slippage in slippages:
             if self == slippage.initialDescriptor:
                 return slippage.targetDescriptor

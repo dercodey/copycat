@@ -342,7 +342,7 @@ def rule_scout(ctx, codelet):
         newList = []
         slippages = workspace.slippages()
         for node in objectList:
-            node = node.applySlippages(slippages)
+            node = node.apply_slippages(slippages)
             if targetObject.described(node):
                 if targetObject.distinguishingDescriptor(node):
                     newList += [node]

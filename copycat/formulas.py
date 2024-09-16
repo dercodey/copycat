@@ -46,7 +46,7 @@ def getMappings(objectFromInitial, objectFromTarget,
         for target in targetDescriptions:
             if initial.descriptionType == target.descriptionType:
                 if (initial.descriptor == target.descriptor or
-                        initial.descriptor.slipLinked(target.descriptor)):
+                        initial.descriptor.slip_linked(target.descriptor)):
                     mapping = ConceptMapping(
                         initial.descriptionType,
                         target.descriptionType,

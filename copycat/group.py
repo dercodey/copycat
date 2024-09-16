@@ -166,7 +166,7 @@ class Group(WorkspaceObject):
     def updateInternalStrength(self):
         slipnet = self.ctx.slipnet
         relatedBondAssociation = self.groupCategory.getRelatedNode(
-            slipnet.bondCategory).degreeOfAssociation()
+            slipnet.bondCategory).degree_of_association()
         bondWeight = relatedBondAssociation ** 0.98
         length = len(self.objectList)
         if length == 1:

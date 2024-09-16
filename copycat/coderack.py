@@ -238,7 +238,7 @@ class Coderack(object):
             directionCategory.buffer = 100.0
         group = Group(objects[0].string, groupCategory, directionCategory,
                       bondFacet, objects, bondList)
-        urgency = bondCategory.bondDegreeOfAssociation()
+        urgency = bondCategory.bond_degree_of_association()
         self.newCodelet('group-strength-tester', urgency, [group])
 
     def proposeBond(self, source, destination, bondCategory, bondFacet,
@@ -248,7 +248,7 @@ class Coderack(object):
         destinationDescriptor.buffer = 100.0
         bond = Bond(self.ctx, source, destination, bondCategory, bondFacet,
                     sourceDescriptor, destinationDescriptor)
-        urgency = bondCategory.bondDegreeOfAssociation()
+        urgency = bondCategory.bond_degree_of_association()
         self.newCodelet('bond-strength-tester', urgency, [bond])
 
     def chooseOldCodelet(self):

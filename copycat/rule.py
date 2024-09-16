@@ -40,7 +40,7 @@ class Rule(WorkspaceStructure):
         if changed and changed.correspondence:
             targetObject = changed.correspondence.objectFromTarget
             slippages = workspace.slippages()
-            slipnode = self.descriptor.applySlippages(slippages)
+            slipnode = self.descriptor.apply_slippages(slippages)
             if not targetObject.described(slipnode):
                 self.internalStrength = 0.0
                 return
@@ -124,10 +124,10 @@ class Rule(WorkspaceStructure):
         if not (self.descriptor and self.relation):
             return workspace.targetString
         slippages = workspace.slippages()
-        self.category = self.category.applySlippages(slippages)
-        self.facet = self.facet.applySlippages(slippages)
-        self.descriptor = self.descriptor.applySlippages(slippages)
-        self.relation = self.relation.applySlippages(slippages)
+        self.category = self.category.apply_slippages(slippages)
+        self.facet = self.facet.apply_slippages(slippages)
+        self.descriptor = self.descriptor.apply_slippages(slippages)
+        self.relation = self.relation.apply_slippages(slippages)
         # generate the final string
         changeds = [o for o in workspace.target.objects if
                     o.described(self.descriptor) and
