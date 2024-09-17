@@ -140,14 +140,14 @@ class ConceptMapping(object):
     def symmetricVersion(self):
         if not self.slippage():
             return self
-        bond = self.targetDescriptor.getBondCategory(self.initialDescriptor)
+        bond = self.targetDescriptor.get_bond_category(self.initialDescriptor)
         if bond == self.label:
             return self
         return ConceptMapping(
             self.targetDescriptionType,
             self.initialDescriptionType,
             self.targetDescriptor,
-            self.initialDescriptor1,
+            self.initialDescriptor,
             self.initialObject,
             self.targetObject
         )
