@@ -6,9 +6,10 @@ methods for managing these attributes.
 
 import math
 from typing import List, Optional
+from .randomness import Randomness
 
 
-def jump_threshold():
+def jump_threshold() -> float:
     """Returns the jump threshold value."""
     return 55.0
 
@@ -57,7 +58,11 @@ class Slipnode:
 
     # pylint: disable=too-many-instance-attributes
     def __init__(
-        self, slipnet: "Slipnet", name: str, depth: float, length: float = 0.0  # type: ignore  # noqa: F821
+        self,
+        slipnet: "Slipnet",  # type: ignore  # noqa: F821
+        name: str,
+        depth: float,
+        length: float = 0.0,
     ):
         self.slipnet = slipnet
         self.name = name
@@ -182,11 +187,14 @@ class Slipnode:
             other (Slipnode): The other Slipnode to check.
 
         Returns:
-            bool: True if the Slipnode is the same as or linked to the other Slipnode, False otherwise.
+            bool: True if the Slipnode is the same as or linked to the other Slipnode,
+                False otherwise.
         """
         return self == other or self.linked(other)
 
-    def apply_slippages(self, slippages: List["ConceptMapping"]) -> "Slipnode":  # type: ignore  # noqa: F821
+    def apply_slippages(
+        self, slippages: List["ConceptMapping"]  # type: ignore  # noqa: F821
+    ) -> "Slipnode":
         """
         Applies slippages to the Slipnode.
 
@@ -227,28 +235,38 @@ class Slipnode:
                     return link.label
         return None
 
-    def update(self):
+    def update(self) -> None:
+        """Updates the activation buffer of the Slipnode."""
         self.old_activation = self.activation
         self.buffer -= self.activation * (100.0 - self.conceptual_depth) / 100.0
 
-    def spread_activation(self):
+    def spread_activation(self) -> None:
+        """Spreads activation to outgoing links if the Slipnode is fully active."""
         if self.fully_active():
             for link in self.outgoing_links:
                 link.spread_activation()
 
-    def add_buffer(self):
+    def add_buffer(self) -> None:
+        """Adds the buffer value to the activation and clamps it between 0 and 100."""
         if self.unclamped():
             self.activation += self.buffer
         self.activation = min(max(0, self.activation), 100)
 
-    def jump(self, random):
+    def jump(self, random: Randomness) -> None:
+        """
+        Determines if the Slipnode should jump to full activation based on a random value.
+
+        Args:
+            random: An object with a coinFlip method to determine randomness.
+        """
         if self.clamped or self.activation <= jump_threshold():
             return
         value = (self.activation / 100.0) ** 3
-        if random.coinFlip(value):
+        if random.coin_flip(value):
             self.activation = 100.0
 
-    def get_name(self):
+    def get_name(self) -> str:
+        """returns the node name"""
         if len(self.name) == 1:
             return self.name.upper()
         return self.name
