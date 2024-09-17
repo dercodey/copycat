@@ -59,7 +59,7 @@ class Group(WorkspaceObject):
         random = self.ctx.random
         slipnet = self.ctx.slipnet
         probability = self.lengthDescriptionProbability()
-        if random.coinFlip(probability):
+        if random.coin_flip(probability):
             length = len(self.objectList)
             if length < 6:
                 self.addDescription(slipnet.length, slipnet.numbers[length - 1])

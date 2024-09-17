@@ -115,7 +115,7 @@ def __slippability(ctx, conceptMappings):
     for mapping in conceptMappings:
         slippiness = mapping.slippability() / 100.0
         probabilityOfSlippage = temperature.getAdjustedProbability(slippiness)
-        if random.coinFlip(probabilityOfSlippage):
+        if random.coin_flip(probabilityOfSlippage):
             return True
     return False
 
@@ -135,7 +135,7 @@ def breaker(ctx, codelet):
     temperature = ctx.temperature
     workspace = ctx.workspace
     probabilityOfFizzle = (100.0 - temperature.value()) / 100.0
-    if random.coinFlip(probabilityOfFizzle):
+    if random.coin_flip(probabilityOfFizzle):
         return
     # choose a structure at random
     structures = [s for s in workspace.structures if
@@ -154,7 +154,7 @@ def breaker(ctx, codelet):
     for structure in breakObjects:
         breakProbability = temperature.getAdjustedProbability(
             structure.totalStrength / 100.0)
-        if random.coinFlip(breakProbability):
+        if random.coin_flip(breakProbability):
             return
     for structure in breakObjects:
         structure.break_the_structure()
@@ -176,7 +176,7 @@ def similarPropertyLinks(ctx, slip_node):
         association = slip_link.degree_of_association() / 100.0
         # TODO:use entropy
         probability = temperature.getAdjustedProbability(association)
-        if random.coinFlip(probability):
+        if random.coin_flip(probability):
             result += [slip_link]
     return result
 
@@ -233,7 +233,7 @@ def description_strength_tester(ctx, codelet):
     strength = description.totalStrength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
-    assert random.coinFlip(probability)
+    assert random.coin_flip(probability)
     coderack.newCodelet('description-builder', strength, [description])
 
 
@@ -383,7 +383,7 @@ def rule_strength_tester(ctx, codelet):
     rule.updateStrength()
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(rule.totalStrength / 100.0)
-    if random.coinFlip(probability):
+    if random.coin_flip(probability):
         coderack.newCodelet('rule-builder', rule.totalStrength, [rule])
 
 
@@ -488,7 +488,7 @@ def bond_strength_tester(ctx, codelet):
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
     logging.info('bond strength = %d for %s', strength, bond)
-    assert random.coinFlip(probability)
+    assert random.coin_flip(probability)
     bond.facet.buffer = 100.0
     bond.sourceDescriptor.buffer = 100.0
     bond.destinationDescriptor.buffer = 100.0
@@ -575,7 +575,7 @@ def top_down_group_scout__category(ctx, codelet):
                 group = Group(source.string, slipnet.samenessGroup,
                               None, slipnet.letterCategory, [source], [])
                 probability = group.singleLetterGroupProbability()
-                if random.coinFlip(probability):
+                if random.coin_flip(probability):
                     coderack.proposeSingleLetterGroup(source)
         return
     direction = firstBond.directionCategory
@@ -771,7 +771,7 @@ def group_strength_tester(ctx, codelet):
     strength = group.totalStrength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
-    if random.coinFlip(probability):
+    if random.coin_flip(probability):
         # it is strong enough - post builder  & activate nodes
         group.groupCategory.get_related_node(slipnet.bondCategory).buffer = 100.0
         if group.directionCategory:
@@ -1030,7 +1030,7 @@ def correspondence_strength_tester(ctx, codelet):
     strength = correspondence.totalStrength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
-    if random.coinFlip(probability):
+    if random.coin_flip(probability):
         # activate some concepts
         for mapping in correspondence.conceptMappings:
             mapping.initialDescriptionType.buffer = 100.0

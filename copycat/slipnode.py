@@ -257,7 +257,7 @@ class Slipnode:
         Determines if the Slipnode should jump to full activation based on a random value.
 
         Args:
-            random: An object with a coinFlip method to determine randomness.
+            random: An object with a coin_flip method to determine randomness.
         """
         if self.clamped or self.activation <= jump_threshold():
             return

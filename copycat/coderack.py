@@ -112,9 +112,9 @@ class Coderack(object):
             number = workspace.numberOfUnreplacedObjects()
         if 'correspondence' in codeletName:
             number = workspace.numberOfUncorrespondingObjects()
-        if number < random.sqrtBlur(2.0):
+        if number < random.sqrt_blur(2.0):
             return 1
-        if number < random.sqrtBlur(4.0):
+        if number < random.sqrt_blur(4.0):
             return 2
         return 3
 
@@ -134,7 +134,7 @@ class Coderack(object):
                 probability = self.probabilityOfPosting(codeletName)
                 howMany = self.howManyToPost(codeletName)
                 for _ in range(howMany):
-                    if not random.coinFlip(probability):
+                    if not random.coin_flip(probability):
                         continue
                     urgency = getUrgencyBin(
                         node.activation * node.conceptual_depth / 100.0)
@@ -169,7 +169,7 @@ class Coderack(object):
         if temperature.value() < 25.0 and 'translator' in codeletName:
             urgency = 5
         for _ in range(howMany):
-            if random.coinFlip(probability):
+            if random.coin_flip(probability):
                 codelet = Codelet(codeletName, urgency, [], self.codeletsRun)
                 self.post(codelet)
 

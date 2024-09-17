@@ -40,7 +40,7 @@ class Randomness(object):
     A class that encapsulates random operations with an optional seed.
 
     Methods:
-        coinFlip(p=0.5):
+        coin_flip(p=0.5):
             Returns True with probability p.
 
         choice(seq):
