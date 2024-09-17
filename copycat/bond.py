@@ -3,8 +3,16 @@ from .workspaceStructure import WorkspaceStructure
 
 class Bond(WorkspaceStructure):
     # pylint: disable=too-many-arguments
-    def __init__(self, ctx, source, destination, bondCategory, bondFacet,
-                 sourceDescriptor, destinationDescriptor):
+    def __init__(
+        self,
+        ctx,
+        source,
+        destination,
+        bondCategory,
+        bondFacet,
+        sourceDescriptor,
+        destinationDescriptor,
+    ):
         WorkspaceStructure.__init__(self, ctx)
         slipnet = self.ctx.slipnet
         self.source = source
@@ -21,24 +29,29 @@ class Bond(WorkspaceStructure):
         self.sourceDescriptor = sourceDescriptor
         self.destinationDescriptor = destinationDescriptor
         self.category = bondCategory
-        if (self.sourceDescriptor == self.destinationDescriptor):
+        if self.sourceDescriptor == self.destinationDescriptor:
             self.directionCategory = None
 
     def flippedVersion(self):
         slipnet = self.ctx.slipnet
         return Bond(
             self.ctx,
-            self.destination, self.source,
+            self.destination,
+            self.source,
             self.category.getRelatedNode(slipnet.opposite),
-            self.facet, self.destinationDescriptor, self.sourceDescriptor
+            self.facet,
+            self.destinationDescriptor,
+            self.sourceDescriptor,
         )
 
     def __repr__(self):
-        return '<Bond: %s>' % self.__str__()
+        return "<Bond: %s>" % self.__str__()
 
     def __str__(self):
-        return '%s bond between %s and %s' % (
-            self.category.name, self.leftObject, self.rightObject,
+        return "%s bond between %s and %s" % (
+            self.category.name,
+            self.leftObject,
+            self.rightObject,
         )
 
     def buildBond(self):
@@ -82,8 +95,8 @@ class Bond(WorkspaceStructure):
                 objekt = self.leftObject.correspondence.objectFromInitial
             if objekt.leftmost and objekt.rightBond:
                 if (
-                    objekt.rightBond.directionCategory and
-                    objekt.rightBond.directionCategory != self.directionCategory
+                    objekt.rightBond.directionCategory
+                    and objekt.rightBond.directionCategory != self.directionCategory
                 ):
                     incompatibles += [correspondence]
         if self.rightObject.rightmost and self.rightObject.correspondence:
@@ -94,8 +107,8 @@ class Bond(WorkspaceStructure):
                 objekt = self.rightObject.correspondence.objectFromInitial
             if objekt.rightmost and objekt.leftBond:
                 if (
-                    objekt.leftBond.directionCategory and
-                    objekt.leftBond.directionCategory != self.directionCategory
+                    objekt.leftBond.directionCategory
+                    and objekt.leftBond.directionCategory != self.directionCategory
                 ):
                     incompatibles += [correspondence]
         return incompatibles
@@ -105,8 +118,7 @@ class Bond(WorkspaceStructure):
         # bonds between objects of same type(ie. letter or group) are
         # stronger than bonds between different types
         sourceGap = self.source.leftIndex != self.source.rightIndex
-        destinationGap = (self.destination.leftIndex !=
-                          self.destination.rightIndex)
+        destinationGap = self.destination.leftIndex != self.destination.rightIndex
         if sourceGap == destinationGap:
             memberCompatibility = 1.0
         else:
@@ -116,8 +128,12 @@ class Bond(WorkspaceStructure):
             facetFactor = 1.0
         else:
             facetFactor = 0.7
-        strength = min(100.0, memberCompatibility * facetFactor *
-                       self.category.bond_degree_of_association())
+        strength = min(
+            100.0,
+            memberCompatibility
+            * facetFactor
+            * self.category.bond_degree_of_association(),
+        )
         self.internalStrength = strength
 
     def updateExternalStrength(self):
@@ -125,25 +141,28 @@ class Bond(WorkspaceStructure):
         supporters = self.numberOfLocalSupportingBonds()
         if supporters > 0.0:
             density = self.localDensity() / 100.0
-            density = density ** 0.5 * 100.0
-            supportFactor = 0.6 ** (1.0 / supporters ** 3)
+            density = density**0.5 * 100.0
+            supportFactor = 0.6 ** (1.0 / supporters**3)
             supportFactor = max(1.0, supportFactor)
             strength = supportFactor * density
             self.externalStrength = strength
 
     def numberOfLocalSupportingBonds(self):
         return sum(
-            1 for b in self.string.bonds if
-            b.string == self.source.string and
-            self.leftObject.letterDistance(b.leftObject) != 0 and
-            self.rightObject.letterDistance(b.rightObject) != 0 and
-            self.category == b.category and
-            self.directionCategory == b.directionCategory
+            1
+            for b in self.string.bonds
+            if b.string == self.source.string
+            and self.leftObject.letterDistance(b.leftObject) != 0
+            and self.rightObject.letterDistance(b.rightObject) != 0
+            and self.category == b.category
+            and self.directionCategory == b.directionCategory
         )
 
     def sameCategories(self, other):
-        return (self.category == other.category and
-                self.directionCategory == other.directionCategory)
+        return (
+            self.category == other.category
+            and self.directionCategory == other.directionCategory
+        )
 
     def myEnds(self, object1, object2):
         if self.source == object1 and self.destination == object2:
@@ -164,9 +183,9 @@ class Bond(WorkspaceStructure):
                         slotSum += 1.0
                         for bond in self.string.bonds:
                             if (
-                                bond != self and
-                                self.sameCategories(bond) and
-                                self.myEnds(object1, object2)
+                                bond != self
+                                and self.sameCategories(bond)
+                                and self.myEnds(object1, object2)
                             ):
                                 supportSum += 1.0
         try:
@@ -190,8 +209,8 @@ class Bond(WorkspaceStructure):
         slipnet = self.ctx.slipnet
         for bond in bonds:
             if (
-                bond.category == self.category and
-                bond.directionCategory == self.directionCategory
+                bond.category == self.category
+                and bond.directionCategory == self.directionCategory
             ):
                 result += [bond]
             else:
@@ -203,9 +222,13 @@ class Bond(WorkspaceStructure):
                 if slipnet.sameness in [self.category, bond.category]:
                     return []
                 bond = Bond(
-                    bond.ctx, bond.destination, bond.source, self.category,
-                    self.facet, bond.destinationDescriptor,
-                    bond.sourceDescriptor
+                    bond.ctx,
+                    bond.destination,
+                    bond.source,
+                    self.category,
+                    self.facet,
+                    bond.destinationDescriptor,
+                    bond.sourceDescriptor,
                 )
                 result += [bond]
         return result
