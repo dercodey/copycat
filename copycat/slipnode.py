@@ -43,6 +43,7 @@ class Slipnode:
     shrunk_link_length: float
 
     activation: float = 0.0
+    old_activation: Optional[float] = None
     buffer: float = 0.0
     clamped: bool = False
     category_links: List["Sliplink"] = []  # type: ignore  # noqa: F821
@@ -185,7 +186,7 @@ class Slipnode:
         """
         return self == other or self.linked(other)
 
-    def apply_slippages(self, slippages: List["ConceptMapping"]) -> "Slipnode": # type: ignore  # noqa: F821
+    def apply_slippages(self, slippages: List["ConceptMapping"]) -> "Slipnode":  # type: ignore  # noqa: F821
         """
         Applies slippages to the Slipnode.
 
@@ -197,27 +198,27 @@ class Slipnode:
                 return slippage.targetDescriptor
         return self
 
-    def getRelatedNode(self, relation):
+    def get_related_node(self, relation: "Slipnode") -> Optional["Slipnode"]:
         """Return the node that is linked to this node via this relation.
 
         If no linked node is found, return None
         """
-        slipnet = self.slipnet
+        slipnet: "Slipnet" = self.slipnet  # type: ignore  # noqa: F821
         if relation == slipnet.identity:
             return self
         destinations = [
-            l.destination for l in self.outgoing_links if l.label == relation
+            link.destination for link in self.outgoing_links if link.label == relation
         ]
         if destinations:
             return destinations[0]
         return None
 
-    def getBondCategory(self, destination):
+    def get_bond_category(self, destination: "Slipnode") -> Optional["Slipnode"]:
         """Return the label of the link between these nodes if it exists.
 
         If it does not exist return None
         """
-        slipnet = self.slipnet
+        slipnet: "Slipnet" = self.slipnet  # type: ignore  # noqa: F821
         if self == destination:
             return slipnet.identity
         else:
@@ -227,7 +228,7 @@ class Slipnode:
         return None
 
     def update(self):
-        self.oldActivation = self.activation
+        self.old_activation = self.activation
         self.buffer -= self.activation * (100.0 - self.conceptual_depth) / 100.0
 
     def spread_activation(self):
@@ -235,7 +236,7 @@ class Slipnode:
             for link in self.outgoing_links:
                 link.spread_activation()
 
-    def addBuffer(self):
+    def add_buffer(self):
         if self.unclamped():
             self.activation += self.buffer
         self.activation = min(max(0, self.activation), 100)

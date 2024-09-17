@@ -9,7 +9,7 @@ class ConceptMapping(object):
         self.targetDescriptor = targetDescriptor
         self.initialObject = initialObject
         self.targetObject = targetObject
-        self.label = initialDescriptor.getBondCategory(targetDescriptor)
+        self.label = initialDescriptor.get_bond_category(targetDescriptor)
 
     def __repr__(self):
         return '<ConceptMapping: %s from %s to %s>' % (

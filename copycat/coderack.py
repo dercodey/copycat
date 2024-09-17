@@ -232,7 +232,7 @@ class Coderack(object):
     def proposeGroup(self, objects, bondList, groupCategory, directionCategory,
                      bondFacet):
         slipnet = self.ctx.slipnet
-        bondCategory = groupCategory.getRelatedNode(slipnet.bondCategory)
+        bondCategory = groupCategory.get_related_node(slipnet.bondCategory)
         bondCategory.buffer = 100.0
         if directionCategory:
             directionCategory.buffer = 100.0

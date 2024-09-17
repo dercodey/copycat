@@ -297,7 +297,7 @@ def bottom_up_bond_scout(ctx, codelet):
     logging.info("source descriptor: %s", sourceDescriptor.name.upper())
     logging.info("destination descriptor: %s",
                  destinationDescriptor.name.upper())
-    category = sourceDescriptor.getBondCategory(destinationDescriptor)
+    category = sourceDescriptor.get_bond_category(destinationDescriptor)
     assert category
     if category == slipnet.identity:
         category = slipnet.sameness
@@ -436,12 +436,12 @@ def top_down_bond_scout__category(ctx, codelet):
     assert bondFacet
     sourceDescriptor, destinationDescriptor = __getDescriptors(
         bondFacet, source, destination)
-    forwardBond = sourceDescriptor.getBondCategory(destinationDescriptor)
+    forwardBond = sourceDescriptor.get_bond_category(destinationDescriptor)
     if forwardBond == slipnet.identity:
         forwardBond = slipnet.sameness
         backwardBond = slipnet.sameness
     else:
-        backwardBond = destinationDescriptor.getBondCategory(sourceDescriptor)
+        backwardBond = destinationDescriptor.get_bond_category(sourceDescriptor)
     assert category == forwardBond or category == backwardBond
     if category == forwardBond:
         coderack.proposeBond(source, destination, category,
@@ -467,7 +467,7 @@ def top_down_bond_scout__direction(ctx, codelet):
     assert bondFacet
     sourceDescriptor, destinationDescriptor = __getDescriptors(
         bondFacet, source, destination)
-    category = sourceDescriptor.getBondCategory(destinationDescriptor)
+    category = sourceDescriptor.get_bond_category(destinationDescriptor)
     assert category
     if category == slipnet.identity:
         category = slipnet.sameness
@@ -546,7 +546,7 @@ def top_down_group_scout__category(ctx, codelet):
     random = ctx.random
     slipnet = ctx.slipnet
     groupCategory = codelet.arguments[0]
-    category = groupCategory.getRelatedNode(slipnet.bondCategory)
+    category = groupCategory.get_related_node(slipnet.bondCategory)
     assert category
     source = __getScoutSource(ctx, category, formulas.localBondCategoryRelevance,
                               'group')
@@ -669,7 +669,7 @@ def top_down_group_scout__direction(ctx, codelet):
     logging.info('possible group: %s', firstBond)
     category = firstBond.category
     assert category
-    groupCategory = category.getRelatedNode(slipnet.groupCategory)
+    groupCategory = category.get_related_node(slipnet.groupCategory)
     logging.info('trying from %s to %s', source, category.name)
     bondFacet = None
     # find leftmost object in group with these bonds
@@ -751,7 +751,7 @@ def group_scout__whole_string(ctx, codelet):
     bonds = chosenBond.possibleGroupBonds(bonds)
     assert bonds
     category = chosenBond.category
-    groupCategory = category.getRelatedNode(slipnet.groupCategory)
+    groupCategory = category.get_related_node(slipnet.groupCategory)
     directionCategory = chosenBond.directionCategory
     bondFacet = chosenBond.facet
     coderack.proposeGroup(objects, bonds, groupCategory, directionCategory, bondFacet)
@@ -773,7 +773,7 @@ def group_strength_tester(ctx, codelet):
     probability = temperature.getAdjustedProbability(strength / 100.0)
     if random.coinFlip(probability):
         # it is strong enough - post builder  & activate nodes
-        group.groupCategory.getRelatedNode(slipnet.bondCategory).buffer = 100.0
+        group.groupCategory.get_related_node(slipnet.bondCategory).buffer = 100.0
         if group.directionCategory:
             group.directionCategory.buffer = 100.0
         coderack.newCodelet('group-builder', strength, [group])
@@ -839,7 +839,7 @@ def group_builder(ctx, codelet):
             else:
                 source = object2
                 destination = object1
-            category = group.groupCategory.getRelatedNode(slipnet.bondCategory)
+            category = group.groupCategory.get_related_node(slipnet.bondCategory)
             facet = group.facet
             newBond = Bond(ctx, source, destination, category, facet,
                            source.getDescriptor(facet),

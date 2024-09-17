@@ -26,7 +26,7 @@ class Slipnet(object):
         for node in self.slipnodes:
             node.spread_activation()
         for node in self.slipnodes:
-            node.addBuffer()
+            node.add_buffer()
             node.jump(random)
             node.buffer = 0.0
 

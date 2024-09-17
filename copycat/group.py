@@ -15,7 +15,7 @@ class Group(WorkspaceObject):
         self.facet = facet
         self.objectList = objectList
         self.bondList = bondList
-        self.bondCategory = self.groupCategory.getRelatedNode(
+        self.bondCategory = self.groupCategory.get_related_node(
             slipnet.bondCategory)
 
         leftObject = objectList[0]
@@ -165,7 +165,7 @@ class Group(WorkspaceObject):
 
     def updateInternalStrength(self):
         slipnet = self.ctx.slipnet
-        relatedBondAssociation = self.groupCategory.getRelatedNode(
+        relatedBondAssociation = self.groupCategory.get_related_node(
             slipnet.bondCategory).degree_of_association()
         bondWeight = relatedBondAssociation ** 0.98
         length = len(self.objectList)
