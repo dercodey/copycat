@@ -427,7 +427,7 @@ def top_down_bond_scout__category(ctx, codelet):
     slipnet = ctx.slipnet
     logging.info('top_down_bond_scout__category')
     category = codelet.arguments[0]
-    source = __getScoutSource(ctx, category, formulas.localBondCategoryRelevance,
+    source = __getScoutSource(ctx, category, formulas.local_bond_category_relevance,
                               'bond')
     destination = chooseNeighbor(ctx, source)
     logging.info('source: %s, destination: %s', source, destination)
@@ -458,7 +458,7 @@ def top_down_bond_scout__direction(ctx, codelet):
     coderack = ctx.coderack
     slipnet = ctx.slipnet
     direction = codelet.arguments[0]
-    source = __getScoutSource(ctx, direction, formulas.localDirectionCategoryRelevance,
+    source = __getScoutSource(ctx, direction, formulas.local_direction_category_relevance,
                               'bond')
     destination = chooseDirectedNeighbor(ctx, source, direction)
     assert destination
@@ -548,7 +548,7 @@ def top_down_group_scout__category(ctx, codelet):
     groupCategory = codelet.arguments[0]
     category = groupCategory.get_related_node(slipnet.bondCategory)
     assert category
-    source = __getScoutSource(ctx, category, formulas.localBondCategoryRelevance,
+    source = __getScoutSource(ctx, category, formulas.local_bond_category_relevance,
                               'group')
     assert source and not source.spansString()
     if source.leftmost:
@@ -631,7 +631,7 @@ def top_down_group_scout__direction(ctx, codelet):
     slipnet = ctx.slipnet
     direction = codelet.arguments[0]
     source = __getScoutSource(ctx, direction,
-                              formulas.localDirectionCategoryRelevance,
+                              formulas.local_direction_category_relevance,
                               'direction')
     logging.info('source chosen = %s', source)
     assert not source.spansString()
@@ -920,7 +920,7 @@ def bottom_up_correspondence_scout(ctx, codelet):
     assert objectFromTarget is not None
     assert objectFromInitial.spansString() == objectFromTarget.spansString()
     # get the posible concept mappings
-    conceptMappings = formulas.getMappings(
+    conceptMappings = formulas.get_mappings(
         objectFromInitial, objectFromTarget,
         objectFromInitial.relevantDescriptions(),
         objectFromTarget.relevantDescriptions())
@@ -941,7 +941,7 @@ def bottom_up_correspondence_scout(ctx, codelet):
         and all(m.label == slipnet.opposite for m in opposites)  # unreached?
             and slipnet.opposite.activation != 100.0):
         objectFromTarget = objectFromTarget.flippedVersion()
-        conceptMappings = formulas.getMappings(
+        conceptMappings = formulas.get_mappings(
             objectFromInitial, objectFromTarget,
             objectFromInitial.relevantDescriptions(),
             objectFromTarget.relevantDescriptions())
@@ -981,7 +981,7 @@ def important_object_correspondence_scout(ctx, codelet):
                                               targetCandidates)
     assert objectFromInitial.spansString() == objectFromTarget.spansString()
     # get the posible concept mappings
-    conceptMappings = formulas.getMappings(
+    conceptMappings = formulas.get_mappings(
         objectFromInitial, objectFromTarget,
         objectFromInitial.relevantDescriptions(),
         objectFromTarget.relevantDescriptions())
@@ -1002,7 +1002,7 @@ def important_object_correspondence_scout(ctx, codelet):
         and all(m.label == slipnet.opposite for m in opposites)  # unreached?
             and slipnet.opposite.activation != 100.0):
         objectFromTarget = objectFromTarget.flippedVersion()
-        conceptMappings = formulas.getMappings(
+        conceptMappings = formulas.get_mappings(
             objectFromInitial, objectFromTarget,
             objectFromInitial.relevantDescriptions(),
             objectFromTarget.relevantDescriptions())

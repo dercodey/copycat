@@ -18,7 +18,7 @@ class WorkspaceStructure(object):
         """Recalculate the strength from internal and external strengths"""
         weights = ((self.internalStrength, self.internalStrength),
                    (self.externalStrength, 100 - self.internalStrength))
-        strength = formulas.weightedAverage(weights)
+        strength = formulas.weighted_average(weights)
         self.totalStrength = strength
 
     def totalWeakness(self):

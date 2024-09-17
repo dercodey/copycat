@@ -180,7 +180,7 @@ class Group(WorkspaceObject):
         lengthWeight = 100.0 - bondWeight
         weightList = ((relatedBondAssociation, bondWeight),
                       (lengthFactor, lengthWeight))
-        self.internalStrength = formulas.weightedAverage(weightList)
+        self.internalStrength = formulas.weighted_average(weightList)
 
     def updateExternalStrength(self):
         if self.spansString():

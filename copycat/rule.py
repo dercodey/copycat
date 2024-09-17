@@ -52,7 +52,7 @@ class Rule(WorkspaceStructure):
         weights = ((depthDifference, 12),                          # LSaldyt: ???
                    (averageDepth, 18),                             # ????
                    (sharedDescriptorTerm, sharedDescriptorWeight)) # 12 and 18 can be reduced to 2 and 3, depending on sharedDescriptorWeight
-        self.internalStrength = formulas.weightedAverage(weights)
+        self.internalStrength = formulas.weighted_average(weights)
         if self.internalStrength > 100.0: # LSaldyt: A better formula wouldn't need to do this.
             self.internalStrength = 100.0
 

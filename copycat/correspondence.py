@@ -179,7 +179,7 @@ class Correspondence(WorkspaceStructure):
                 self.accessoryConceptMappings += [mapping.symmetricVersion()]
         if isinstance(self.objectFromInitial, Group):
             if isinstance(self.objectFromTarget, Group):
-                bondMappings = formulas.getMappings(
+                bondMappings = formulas.get_mappings(
                     self.objectFromInitial,
                     self.objectFromTarget,
                     self.objectFromInitial.bondDescriptions,

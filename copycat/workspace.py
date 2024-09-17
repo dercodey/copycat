@@ -120,7 +120,7 @@ class Workspace(object):
             ruleWeakness = 100.0 - self.rule.totalStrength
         else:
             ruleWeakness = 100.0
-        return formulas.weightedAverage((
+        return formulas.weighted_average((
             (self.totalUnhappiness, 0.8),
             (ruleWeakness, 0.2)
         ))

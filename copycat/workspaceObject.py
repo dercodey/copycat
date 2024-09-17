@@ -1,5 +1,5 @@
 from .description import Description
-from .formulas import weightedAverage
+from .formulas import weighted_average
 from .workspaceStructure import WorkspaceStructure
 
 class WorkspaceObject(WorkspaceStructure):
@@ -85,11 +85,11 @@ class WorkspaceObject(WorkspaceStructure):
         averageHappiness = (intraStringHappiness + interStringHappiness) / 2
         self.totalUnhappiness = 100.0 - averageHappiness
 
-        self.intraStringSalience = weightedAverage((
+        self.intraStringSalience = weighted_average((
             (self.relativeImportance, 0.2),
             (self.intraStringUnhappiness, 0.8)
         ))
-        self.interStringSalience = weightedAverage((
+        self.interStringSalience = weighted_average((
             (self.relativeImportance, 0.8),
             (self.interStringUnhappiness, 0.2)
         ))
