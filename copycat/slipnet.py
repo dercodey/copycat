@@ -53,6 +53,30 @@ class Slipnet(object):
     successor: Slipnode
     sameness: Slipnode
 
+    # group types
+    predecessorGroup: Slipnode
+    successorGroup: Slipnode
+    samenessGroup: Slipnode
+
+    # other relations
+    identity: Slipnode
+    opposite: Slipnode
+
+    # objects
+    letter: Slipnode
+    group: Slipnode
+
+    # categories
+    letterCategory: Slipnode
+    stringPositionCategory: Slipnode
+    alphabeticPositionCategory: Slipnode
+    directionCategory: Slipnode
+    bondCategory: Slipnode
+    groupCategory: Slipnode
+    length: Slipnode
+    objectCategory: Slipnode
+    bondFacet: Slipnode
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self):
         """Initializes the Slipnet instance and sets up the initial nodes and links."""
@@ -313,7 +337,7 @@ class Slipnet(object):
         self.__addSlipLink(source, destination, label=self.opposite)
         self.__addSlipLink(destination, source, label=self.opposite)
 
-    def __addNode(self, name, depth, length=0):
+    def __addNode(self, name, depth, length: float = 0.0):
         slipnode = Slipnode(self, name, depth, length)
         self.slipnodes += [slipnode]
         return slipnode
