@@ -18,8 +18,8 @@ class WorkspaceString(object):
             value = ord(c) - ord('A')
             letter = Letter(self, position, self.length)
             letter.workspaceString = self
-            letter.addDescription(slipnet.objectCategory, slipnet.letter)
-            letter.addDescription(slipnet.letterCategory, slipnet.letters[value])
+            letter.addDescription(slipnet.object_category, slipnet.letter)
+            letter.addDescription(slipnet.letter_category, slipnet.letters[value])
             letter.describe(position, self.length)
             workspace.buildDescriptions(letter)
             self.letters += [letter]

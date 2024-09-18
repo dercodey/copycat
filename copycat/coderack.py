@@ -226,13 +226,13 @@ class Coderack(object):
 
     def proposeSingleLetterGroup(self, source):
         slipnet = self.ctx.slipnet
-        self.proposeGroup([source], [], slipnet.samenessGroup, None,
-                          slipnet.letterCategory)
+        self.proposeGroup([source], [], slipnet.sameness_group, None,
+                          slipnet.letter_category)
 
     def proposeGroup(self, objects, bondList, groupCategory, directionCategory,
                      bondFacet):
         slipnet = self.ctx.slipnet
-        bondCategory = groupCategory.get_related_node(slipnet.bondCategory)
+        bondCategory = groupCategory.get_related_node(slipnet.bond_category)
         bondCategory.buffer = 100.0
         if directionCategory:
             directionCategory.buffer = 100.0

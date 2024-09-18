@@ -15,13 +15,13 @@ class Letter(WorkspaceObject):
     def describe(self, position, length):
         slipnet = self.ctx.slipnet
         if length == 1:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.single)
+            self.addDescription(slipnet.string_position_category, slipnet.single)
         if self.leftmost:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.leftmost)
+            self.addDescription(slipnet.string_position_category, slipnet.leftmost)
         if self.rightmost:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.rightmost)
+            self.addDescription(slipnet.string_position_category, slipnet.rightmost)
         if position * 2 == length + 1:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.middle)
+            self.addDescription(slipnet.string_position_category, slipnet.middle)
 
     def __repr__(self):
         return '<Letter: %s>' % self.__str__()

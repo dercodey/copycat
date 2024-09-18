@@ -17,18 +17,36 @@ from .sliplink import Sliplink
 
 class Slipnet(object):
     """
-    Represents a network of Slipnodes and Sliplinks.
-
+    Slipnet class represents a network of slipnodes that facilitates the activation and interaction of various elements such as letters, numbers, and their relationships.
     Attributes:
-        number_of_updates (int): The number of updates performed on the Slipnet.
-        slipnodes (List[Slipnode]): A list of Slipnodes in the Slipnet.
-        initially_clamped_slipnodes (List[Slipnode]): A list of Slipnodes that are initially
-                clamped.
+        number_of_updates (int): The count of updates performed on the Slipnet.
+        slipnodes (List[Slipnode]): A list of all slipnodes in the Slipnet.
+        letters (List[Slipnode]): A list of slipnodes representing letters.
+        numbers (List[Slipnode]): A list of slipnodes representing numbers.
+        leftmost, rightmost, middle, single, whole (Slipnode): Slipnodes representing string positions.
+        first, last (Slipnode): Slipnodes representing alphabetic positions.
+        left, right (Slipnode): Slipnodes representing directions.
+        predecessor, successor, sameness (Slipnode): Slipnodes representing bond types.
+        predecessor_group, successor_group, sameness_group (Slipnode): Slipnodes representing group types.
+        identity, opposite (Slipnode): Slipnodes representing other relations.
+        letter, group (Slipnode): Slipnodes representing objects.
+        letter_category, string_position_category, alphabetic_position_category, direction_category, bond_category, group_category, length, object_category, bond_facet (Slipnode): Slipnodes representing various categories.
+        initially_clamped_slipnodes (List[Slipnode]): A list of slipnodes that are initially clamped.
+    Methods:
+        __init__: Initializes the Slipnet instance and sets up the initial nodes and links.
+        reset: Resets the Slipnet by resetting all nodes and clamping the initially clamped nodes.
+        update: Updates the Slipnet by spreading activation and updating the state of each node.
+        is_distinguishing_descriptor: Determines if a given descriptor is unique among its type.
+        __add_initial_nodes: Initializes the slipnet with a set of predefined nodes.
+        __add_initial_links: Establishes connections between various elements in the slipnet.
+        __add_link: Adds a link between two Slipnodes.
+        __add_slip_link: Adds a lateral slip link between two Slipnodes.
+        __add_non_slip_link: Adds a non-slip link between two Slipnodes.
+        __add_bidirectional_link: Adds a bidirectional link between two Slipnodes.
     """
 
     number_of_updates: int
     slipnodes: List[Slipnode]
-    initially_clamped_slipnodes: List[Slipnode]
 
     letters: List[Slipnode]
     numbers: List[Slipnode]
@@ -76,6 +94,8 @@ class Slipnet(object):
     length: Slipnode
     object_category: Slipnode
     bond_facet: Slipnode
+
+    initially_clamped_slipnodes: List[Slipnode]
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self):

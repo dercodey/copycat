@@ -55,8 +55,8 @@ class Correspondence(WorkspaceStructure):
             return None
         if initialBond.directionCategory and targetBond.directionCategory:
             mapping = ConceptMapping(
-                slipnet.directionCategory,
-                slipnet.directionCategory,
+                slipnet.direction_category,
+                slipnet.direction_category,
                 initialBond.directionCategory,
                 targetBond.directionCategory,
                 None,

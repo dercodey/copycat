@@ -16,7 +16,7 @@ class Group(WorkspaceObject):
         self.objectList = objectList
         self.bondList = bondList
         self.bondCategory = self.groupCategory.get_related_node(
-            slipnet.bondCategory)
+            slipnet.bond_category)
 
         leftObject = objectList[0]
         rightObject = objectList[-1]
@@ -32,26 +32,26 @@ class Group(WorkspaceObject):
         if self.bondList and len(self.bondList):
             firstFacet = self.bondList[0].facet
             self.addBondDescription(
-                Description(self, slipnet.bondFacet, firstFacet))
+                Description(self, slipnet.bond_facet, firstFacet))
         self.addBondDescription(
-            Description(self, slipnet.bondCategory, self.bondCategory))
+            Description(self, slipnet.bond_category, self.bondCategory))
 
-        self.addDescription(slipnet.objectCategory, slipnet.group)
-        self.addDescription(slipnet.groupCategory, self.groupCategory)
+        self.addDescription(slipnet.object_category, slipnet.group)
+        self.addDescription(slipnet.group_category, self.groupCategory)
         if not self.directionCategory:
             # sameness group - find letterCategory
             letter = self.objectList[0].getDescriptor(self.facet)
             self.addDescription(self.facet, letter)
         if self.directionCategory:
-            self.addDescription(slipnet.directionCategory, self.directionCategory)
+            self.addDescription(slipnet.direction_category, self.directionCategory)
         if self.spansString():
-            self.addDescription(slipnet.stringPositionCategory, slipnet.whole)
+            self.addDescription(slipnet.string_position_category, slipnet.whole)
         elif self.leftmost:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.leftmost)
+            self.addDescription(slipnet.string_position_category, slipnet.leftmost)
         elif self.rightmost:
-            self.addDescription(slipnet.stringPositionCategory, slipnet.rightmost)
+            self.addDescription(slipnet.string_position_category, slipnet.rightmost)
         elif self.middleObject():
-            self.addDescription(slipnet.stringPositionCategory, slipnet.middle)
+            self.addDescription(slipnet.string_position_category, slipnet.middle)
         self.add_length_description_category()
 
     def add_length_description_category(self):
@@ -166,7 +166,7 @@ class Group(WorkspaceObject):
     def updateInternalStrength(self):
         slipnet = self.ctx.slipnet
         relatedBondAssociation = self.groupCategory.get_related_node(
-            slipnet.bondCategory).degree_of_association()
+            slipnet.bond_category).degree_of_association()
         bondWeight = relatedBondAssociation ** 0.98
         length = len(self.objectList)
         if length == 1:

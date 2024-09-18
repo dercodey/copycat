@@ -124,7 +124,8 @@ class Bond(WorkspaceStructure):
         else:
             memberCompatibility = 0.7
         # letter category bonds are stronger
-        if self.facet == slipnet.letterCategory:
+        if self.facet == slipnet.letter_category:
+            
             facetFactor = 1.0
         else:
             facetFactor = 0.7
