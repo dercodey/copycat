@@ -1,3 +1,13 @@
+"""
+This module defines the Slipnet class, which represents a network of Slipnodes and Sliplinks.
+The Slipnet class includes methods for initializing, resetting, and updating the network.
+
+Classes:
+    Slipnet:
+        A class that encapsulates the Slipnet, including its nodes and links, and provides methods
+        for managing the network's state and behavior.
+"""
+
 from typing import List
 
 from .randomness import Randomness
@@ -6,17 +16,52 @@ from .sliplink import Sliplink
 
 
 class Slipnet(object):
+    """
+    Represents a network of Slipnodes and Sliplinks.
+
+    Attributes:
+        number_of_updates (int): The number of updates performed on the Slipnet.
+        slipnodes (List[Slipnode]): A list of Slipnodes in the Slipnet.
+        initially_clamped_slipnodes (List[Slipnode]): A list of Slipnodes that are initially
+                clamped.
+    """
+
     number_of_updates: int
     slipnodes: List[Slipnode]
     initially_clamped_slipnodes: List[Slipnode]
 
+    letters: List[Slipnode]
+    numbers: List[Slipnode]
+
+    # string positions
+    leftmost: Slipnode
+    rightmost: Slipnode
+    middle: Slipnode
+    single: Slipnode
+    whole: Slipnode
+
+    # alphabetic positions
+    first: Slipnode
+    last: Slipnode
+
+    # directions
+    left: Slipnode
+    right: Slipnode
+
+    # bond types
+    predecessor: Slipnode
+    successor: Slipnode
+    sameness: Slipnode
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self):
+        """Initializes the Slipnet instance and sets up the initial nodes and links."""
         self.__addInitialNodes()
         self.__addInitialLinks()
         self.reset()
 
     def reset(self) -> None:
+        """Resets the Slipnet by resetting all nodes and clamping the initially clamped nodes."""
         self.number_of_updates = 0
         for node in self.slipnodes:
             node.reset()
@@ -24,6 +69,12 @@ class Slipnet(object):
             node.clamp_high()
 
     def update(self, random: Randomness) -> None:
+        """
+        Updates the Slipnet by spreading activation and updating the state of each node.
+
+        Args:
+            random (Randomness): An instance of the Randomness class for random operations.
+        """
         self.number_of_updates += 1
         if self.number_of_updates == 50:
             for node in self.initially_clamped_slipnodes:
@@ -37,7 +88,7 @@ class Slipnet(object):
             node.jump(random)
             node.buffer = 0.0
 
-    def isDistinguishingDescriptor(self, descriptor):
+    def is_distinguishing_descriptor(self, descriptor: Slipnode) -> bool:
         """Whether no other object of the same type has the same descriptor"""
         if descriptor == self.letter:
             return False
@@ -47,7 +98,7 @@ class Slipnet(object):
             return False
         return True
 
-    def __addInitialNodes(self):
+    def __addInitialNodes(self) -> None:
         # pylint: disable=too-many-statements
         self.slipnodes = []
         self.letters = []

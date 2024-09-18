@@ -150,13 +150,13 @@ class WorkspaceObject(WorkspaceStructure):
 
     def distinguishingDescriptor(self, descriptor):
         slipnet = self.ctx.slipnet
-        return slipnet.isDistinguishingDescriptor(descriptor)
+        return slipnet.is_distinguishing_descriptor(descriptor)
 
     def relevantDistinguishingDescriptors(self):
         slipnet = self.ctx.slipnet
         return [d.descriptor
                 for d in self.relevantDescriptions()
-                if slipnet.isDistinguishingDescriptor(d.descriptor)]
+                if slipnet.is_distinguishing_descriptor(d.descriptor)]
 
     def getDescriptor(self, descriptionType):
         """The description attached to this object of the description type."""
