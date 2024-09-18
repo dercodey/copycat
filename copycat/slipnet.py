@@ -8,7 +8,7 @@ Classes:
         for managing the network's state and behavior.
 """
 
-from typing import List
+from typing import List, Optional
 
 from .randomness import Randomness
 from .slipnode import Slipnode
@@ -54,9 +54,9 @@ class Slipnet(object):
     sameness: Slipnode
 
     # group types
-    predecessorGroup: Slipnode
-    successorGroup: Slipnode
-    samenessGroup: Slipnode
+    predecessor_group: Slipnode
+    successor_group: Slipnode
+    sameness_group: Slipnode
 
     # other relations
     identity: Slipnode
@@ -67,21 +67,21 @@ class Slipnet(object):
     group: Slipnode
 
     # categories
-    letterCategory: Slipnode
-    stringPositionCategory: Slipnode
-    alphabeticPositionCategory: Slipnode
-    directionCategory: Slipnode
-    bondCategory: Slipnode
-    groupCategory: Slipnode
+    letter_category: Slipnode
+    string_position_category: Slipnode
+    alphabetic_position_category: Slipnode
+    direction_category: Slipnode
+    bond_category: Slipnode
+    group_category: Slipnode
     length: Slipnode
-    objectCategory: Slipnode
-    bondFacet: Slipnode
+    object_category: Slipnode
+    bond_facet: Slipnode
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self):
         """Initializes the Slipnet instance and sets up the initial nodes and links."""
-        self.__addInitialNodes()
-        self.__addInitialLinks()
+        self.__add_initial_nodes()
+        self.__add_initial_links()
         self.reset()
 
     def reset(self) -> None:
@@ -122,229 +122,436 @@ class Slipnet(object):
             return False
         return True
 
-    def __addInitialNodes(self) -> None:
+    def __add_initial_nodes(self) -> None:
+        """
+        Initializes the slipnet with a set of predefined nodes representing
+        letters, numbers, string positions, directions, bond types, group types,
+        relations, objects, and categories. Each node is created with a specific
+        weight and may have associated codelets for further processing.
+
+        The method performs the following actions:
+        - Adds nodes for each letter in the alphabet with a weight of 10.0.
+        - Adds nodes for numbers 1 to 5 with a weight of 30.0.
+        - Adds nodes for various string positions (leftmost, rightmost, middle,
+            single, whole) with a weight of 40.0.
+        - Adds nodes for alphabetic positions (first, last) with a weight of 60.0.
+        - Adds directional nodes (left, right) with a weight of 40.0 and
+            associated codelets.
+        - Adds bond type nodes (predecessor, successor, sameness) with weights of
+            50.0 and 80.0, along with associated codelets.
+        - Adds group type nodes (predecessorGroup, successorGroup, samenessGroup)
+            with weights of 50.0 and 80.0, along with associated codelets.
+        - Adds relation nodes (identity, opposite) with weights of 90.0.
+        - Adds object nodes (letter, group) with weights of 20.0 and 80.0.
+        - Adds category nodes for letters, string positions, alphabetic positions,
+            directions, bonds, groups, length, and objects with varying weights.
+        - Initializes a list of initially clamped slipnodes for relevant categories.
+
+        Returns:
+                None
+        """
         # pylint: disable=too-many-statements
         self.slipnodes = []
         self.letters = []
         for c in "abcdefghijklmnopqrstuvwxyz":
-            slipnode = self.__addNode(c, 10.0)
+            slipnode = self.__add_node(c, 10.0)
             self.letters += [slipnode]
         self.numbers = []
         for c in "12345":
-            slipnode = self.__addNode(c, 30.0)
+            slipnode = self.__add_node(c, 30.0)
             self.numbers += [slipnode]
 
         # string positions
-        self.leftmost = self.__addNode("leftmost", 40.0)
-        self.rightmost = self.__addNode("rightmost", 40.0)
-        self.middle = self.__addNode("middle", 40.0)
-        self.single = self.__addNode("single", 40.0)
-        self.whole = self.__addNode("whole", 40.0)
+        self.leftmost = self.__add_node("leftmost", 40.0)
+        self.rightmost = self.__add_node("rightmost", 40.0)
+        self.middle = self.__add_node("middle", 40.0)
+        self.single = self.__add_node("single", 40.0)
+        self.whole = self.__add_node("whole", 40.0)
 
         # alphabetic positions
-        self.first = self.__addNode("first", 60.0)
-        self.last = self.__addNode("last", 60.0)
+        self.first = self.__add_node("first", 60.0)
+        self.last = self.__add_node("last", 60.0)
 
         # directions
-        self.left = self.__addNode("left", 40.0)
+        self.left = self.__add_node("left", 40.0)
         self.left.codelets += ["top-down-bond-scout--direction"]
         self.left.codelets += ["top-down-group-scout--direction"]
-        self.right = self.__addNode("right", 40.0)
+        self.right = self.__add_node("right", 40.0)
         self.right.codelets += ["top-down-bond-scout--direction"]
         self.right.codelets += ["top-down-group-scout--direction"]
 
         # bond types
-        self.predecessor = self.__addNode("predecessor", 50.0, 60)
+        self.predecessor = self.__add_node("predecessor", 50.0, 60)
         self.predecessor.codelets += ["top-down-bond-scout--category"]
-        self.successor = self.__addNode("successor", 50.0, 60)
+        self.successor = self.__add_node("successor", 50.0, 60)
         self.successor.codelets += ["top-down-bond-scout--category"]
-        self.sameness = self.__addNode("sameness", 80.0)
+        self.sameness = self.__add_node("sameness", 80.0)
         self.sameness.codelets += ["top-down-bond-scout--category"]
 
         # group types
-        self.predecessorGroup = self.__addNode("predecessorGroup", 50.0)
-        self.predecessorGroup.codelets += ["top-down-group-scout--category"]
-        self.successorGroup = self.__addNode("successorGroup", 50.0)
-        self.successorGroup.codelets += ["top-down-group-scout--category"]
-        self.samenessGroup = self.__addNode("samenessGroup", 80.0)
-        self.samenessGroup.codelets += ["top-down-group-scout--category"]
+        self.predecessor_group = self.__add_node("predecessorGroup", 50.0)
+        self.predecessor_group.codelets += ["top-down-group-scout--category"]
+        self.successor_group = self.__add_node("successorGroup", 50.0)
+        self.successor_group.codelets += ["top-down-group-scout--category"]
+        self.sameness_group = self.__add_node("samenessGroup", 80.0)
+        self.sameness_group.codelets += ["top-down-group-scout--category"]
 
         # other relations
-        self.identity = self.__addNode("identity", 90.0)
-        self.opposite = self.__addNode("opposite", 90.0, 80.0)
+        self.identity = self.__add_node("identity", 90.0)
+        self.opposite = self.__add_node("opposite", 90.0, 80.0)
 
         # objects
-        self.letter = self.__addNode("letter", 20.0)
-        self.group = self.__addNode("group", 80.0)
+        self.letter = self.__add_node("letter", 20.0)
+        self.group = self.__add_node("group", 80.0)
 
         # categories
-        self.letterCategory = self.__addNode("letterCategory", 30.0)
-        self.stringPositionCategory = self.__addNode("stringPositionCategory", 70.0)
-        self.stringPositionCategory.codelets += ["top-down-description-scout"]
-        self.alphabeticPositionCategory = self.__addNode(
+        self.letter_category = self.__add_node("letterCategory", 30.0)
+        self.string_position_category = self.__add_node("stringPositionCategory", 70.0)
+        self.string_position_category.codelets += ["top-down-description-scout"]
+        self.alphabetic_position_category = self.__add_node(
             "alphabeticPositionCategory", 80.0
         )
-        self.alphabeticPositionCategory.codelets += ["top-down-description-scout"]
-        self.directionCategory = self.__addNode("directionCategory", 70.0)
-        self.bondCategory = self.__addNode("bondCategory", 80.0)
-        self.groupCategory = self.__addNode("groupCategory", 80.0)
-        self.length = self.__addNode("length", 60.0)
-        self.objectCategory = self.__addNode("objectCategory", 90.0)
-        self.bondFacet = self.__addNode("bondFacet", 90.0)
+        self.alphabetic_position_category.codelets += ["top-down-description-scout"]
+        self.direction_category = self.__add_node("directionCategory", 70.0)
+        self.bond_category = self.__add_node("bondCategory", 80.0)
+        self.group_category = self.__add_node("groupCategory", 80.0)
+        self.length = self.__add_node("length", 60.0)
+        self.object_category = self.__add_node("objectCategory", 90.0)
+        self.bond_facet = self.__add_node("bondFacet", 90.0)
 
         # some factors are considered "very relevant" a priori
         self.initially_clamped_slipnodes = [
-            self.letterCategory,
-            self.stringPositionCategory,
+            self.letter_category,
+            self.string_position_category,
         ]
 
-    def __addInitialLinks(self):
+    def __add_initial_links(self):
+        """
+        Initializes the slip links between various elements in the slipnet.
+
+        This method establishes connections between letters, numbers, and their respective
+        categories, properties, and groups. It creates links for opposites, bonds, and relationships
+        between different categories, ensuring that the slipnet structure is properly configured for
+        further operations.
+
+        The following types of links are created:
+        - Instance links between letters and their categories.
+        - Non-slip links between groups and lengths.
+        - Opposite links between pairs of elements.
+        - Property links for specific letters to their first and last counterparts.
+        - Bidirectional links between directional and positional elements.
+        - Slip links between letters and groups.
+
+        This method does not return any value but modifies the internal state of the slipnet by
+        adding the necessary links.
+        """
         self.sliplinks = []
         self.__link_items_to_their_neighbors(self.letters)
         self.__link_items_to_their_neighbors(self.numbers)
         # letter categories
         for letter in self.letters:
-            self.__addInstanceLink(self.letterCategory, letter, 97.0)
-        self.__addCategoryLink(self.samenessGroup, self.letterCategory, 50.0)
+            self.__add_instance_link(self.letter_category, letter, 97.0)
+        self.__add_category_link(self.sameness_group, self.letter_category, 50.0)
         # lengths
         for number in self.numbers:
-            self.__addInstanceLink(self.length, number)
-        groups = [self.predecessorGroup, self.successorGroup, self.samenessGroup]
+            self.__add_instance_link(self.length, number)
+        groups = [self.predecessor_group, self.successor_group, self.sameness_group]
         for group in groups:
-            self.__addNonSlipLink(group, self.length, length=95.0)
+            self.__add_non_slip_link(group, self.length, length=95.0)
         opposites = [
             (self.first, self.last),
             (self.leftmost, self.rightmost),
             (self.left, self.right),
             (self.successor, self.predecessor),
-            (self.successorGroup, self.predecessorGroup),
+            (self.successor_group, self.predecessor_group),
         ]
         for a, b in opposites:
-            self.__addOppositeLink(a, b)
+            self.__add_opposite_link(a, b)
         # properties
-        self.__addPropertyLink(self.letters[0], self.first, 75.0)
-        self.__addPropertyLink(self.letters[-1], self.last, 75.0)
+        self.__add_property_link(self.letters[0], self.first, 75.0)
+        self.__add_property_link(self.letters[-1], self.last, 75.0)
         links = [
             # object categories
-            (self.objectCategory, self.letter),
-            (self.objectCategory, self.group),
+            (self.object_category, self.letter),
+            (self.object_category, self.group),
             # string positions,
-            (self.stringPositionCategory, self.leftmost),
-            (self.stringPositionCategory, self.rightmost),
-            (self.stringPositionCategory, self.middle),
-            (self.stringPositionCategory, self.single),
-            (self.stringPositionCategory, self.whole),
+            (self.string_position_category, self.leftmost),
+            (self.string_position_category, self.rightmost),
+            (self.string_position_category, self.middle),
+            (self.string_position_category, self.single),
+            (self.string_position_category, self.whole),
             # alphabetic positions,
-            (self.alphabeticPositionCategory, self.first),
-            (self.alphabeticPositionCategory, self.last),
+            (self.alphabetic_position_category, self.first),
+            (self.alphabetic_position_category, self.last),
             # direction categories,
-            (self.directionCategory, self.left),
-            (self.directionCategory, self.right),
+            (self.direction_category, self.left),
+            (self.direction_category, self.right),
             # bond categories,
-            (self.bondCategory, self.predecessor),
-            (self.bondCategory, self.successor),
-            (self.bondCategory, self.sameness),
+            (self.bond_category, self.predecessor),
+            (self.bond_category, self.successor),
+            (self.bond_category, self.sameness),
             # group categories
-            (self.groupCategory, self.predecessorGroup),
-            (self.groupCategory, self.successorGroup),
-            (self.groupCategory, self.samenessGroup),
+            (self.group_category, self.predecessor_group),
+            (self.group_category, self.successor_group),
+            (self.group_category, self.sameness_group),
             # bond facets
-            (self.bondFacet, self.letterCategory),
-            (self.bondFacet, self.length),
+            (self.bond_facet, self.letter_category),
+            (self.bond_facet, self.length),
         ]
         for a, b in links:
-            self.__addInstanceLink(a, b)
+            self.__add_instance_link(a, b)
         # link bonds to their groups
-        self.__addNonSlipLink(
-            self.sameness, self.samenessGroup, label=self.groupCategory, length=30.0
+        self.__add_non_slip_link(
+            self.sameness, self.sameness_group, label=self.group_category, length=30.0
         )
-        self.__addNonSlipLink(
-            self.successor, self.successorGroup, label=self.groupCategory, length=60.0
+        self.__add_non_slip_link(
+            self.successor, self.successor_group, label=self.group_category, length=60.0
         )
-        self.__addNonSlipLink(
+        self.__add_non_slip_link(
             self.predecessor,
-            self.predecessorGroup,
-            label=self.groupCategory,
+            self.predecessor_group,
+            label=self.group_category,
             length=60.0,
         )
         # link bond groups to their bonds
-        self.__addNonSlipLink(
-            self.samenessGroup, self.sameness, label=self.bondCategory, length=90.0
+        self.__add_non_slip_link(
+            self.sameness_group, self.sameness, label=self.bond_category, length=90.0
         )
-        self.__addNonSlipLink(
-            self.successorGroup, self.successor, label=self.bondCategory, length=90.0
+        self.__add_non_slip_link(
+            self.successor_group, self.successor, label=self.bond_category, length=90.0
         )
-        self.__addNonSlipLink(
-            self.predecessorGroup,
+        self.__add_non_slip_link(
+            self.predecessor_group,
             self.predecessor,
-            label=self.bondCategory,
+            label=self.bond_category,
             length=90.0,
         )
         # letter category to length
-        self.__addSlipLink(self.letterCategory, self.length, length=95.0)
-        self.__addSlipLink(self.length, self.letterCategory, length=95.0)
+        self.__add_slip_link(self.letter_category, self.length, length=95.0)
+        self.__add_slip_link(self.length, self.letter_category, length=95.0)
         # letter to group
-        self.__addSlipLink(self.letter, self.group, length=90.0)
-        self.__addSlipLink(self.group, self.letter, length=90.0)
+        self.__add_slip_link(self.letter, self.group, length=90.0)
+        self.__add_slip_link(self.group, self.letter, length=90.0)
         # direction-position, direction-neighbor, position-neighbor
-        self.__addBidirectionalLink(self.left, self.leftmost, 90.0)
-        self.__addBidirectionalLink(self.right, self.rightmost, 90.0)
-        self.__addBidirectionalLink(self.right, self.leftmost, 100.0)
-        self.__addBidirectionalLink(self.left, self.rightmost, 100.0)
-        self.__addBidirectionalLink(self.leftmost, self.first, 100.0)
-        self.__addBidirectionalLink(self.rightmost, self.first, 100.0)
-        self.__addBidirectionalLink(self.leftmost, self.last, 100.0)
-        self.__addBidirectionalLink(self.rightmost, self.last, 100.0)
+        self.__add_bidirectional_link(self.left, self.leftmost, 90.0)
+        self.__add_bidirectional_link(self.right, self.rightmost, 90.0)
+        self.__add_bidirectional_link(self.right, self.leftmost, 100.0)
+        self.__add_bidirectional_link(self.left, self.rightmost, 100.0)
+        self.__add_bidirectional_link(self.leftmost, self.first, 100.0)
+        self.__add_bidirectional_link(self.rightmost, self.first, 100.0)
+        self.__add_bidirectional_link(self.leftmost, self.last, 100.0)
+        self.__add_bidirectional_link(self.rightmost, self.last, 100.0)
         # other
-        self.__addSlipLink(self.single, self.whole, length=90.0)
-        self.__addSlipLink(self.whole, self.single, length=90.0)
+        self.__add_slip_link(self.single, self.whole, length=90.0)
+        self.__add_slip_link(self.whole, self.single, length=90.0)
 
-    def __addLink(self, source, destination, label=None, length=0.0):
+    def __add_link(
+        self,
+        source: Slipnode,
+        destination: Slipnode,
+        label: Optional[Slipnode] = None,
+        length: float = 0.0,
+    ) -> Sliplink:
+        """
+        Adds a link between two Slipnodes.
+
+        Parameters:
+            source (Slipnode): The source Slipnode for the link.
+            destination (Slipnode): The destination Slipnode for the link.
+            label (Optional[Slipnode], optional): An optional label for the link. Defaults to None.
+            length (float, optional): The length of the link. Defaults to 0.0.
+
+        Returns:
+            Sliplink: The created Sliplink object connecting the source and destination Slipnodes.
+        """
         link = Sliplink(source, destination, label=label, length=length)
         self.sliplinks += [link]
         return link
 
-    def __addSlipLink(self, source, destination, label=None, length=0.0):
-        link = self.__addLink(source, destination, label, length)
+    def __add_slip_link(
+        self,
+        source: Slipnode,
+        destination: Slipnode,
+        label: Optional[Slipnode] = None,
+        length: float = 0.0,
+    ) -> None:
+        """
+        Adds a lateral slip link between two Slipnodes.
+
+        Parameters:
+            source (Slipnode): The source Slipnode from which the link originates.
+            destination (Slipnode): The destination Slipnode to which the link points.
+            label (Optional[Slipnode], optional): An optional label for the link. Defaults to None.
+            length (float, optional): The length of the link. Defaults to 0.0.
+
+        Returns:
+            None
+        """
+        link = self.__add_link(source, destination, label, length)
         source.lateral_slip_links += [link]
 
-    def __addNonSlipLink(self, source, destination, label=None, length=0.0):
-        link = self.__addLink(source, destination, label, length)
+    def __add_non_slip_link(
+        self,
+        source: Slipnode,
+        destination: Slipnode,
+        label: Optional[Slipnode] = None,
+        length: float = 0.0,
+    ) -> None:
+        """
+        Adds a non-slip link between two Slipnode instances.
+
+        Parameters:
+            source (Slipnode): The source Slipnode from which the link originates.
+            destination (Slipnode): The destination Slipnode to which the link points.
+            label (Optional[Slipnode], optional): An optional label for the link. Defaults to None.
+            length (float, optional): The length of the link. Defaults to 0.0.
+
+        Returns:
+            None: This method does not return a value.
+        """
+        link = self.__add_link(source, destination, label, length)
         source.lateral_non_slip_links += [link]
 
-    def __addBidirectionalLink(self, source, destination, length):
-        self.__addNonSlipLink(source, destination, length=length)
-        self.__addNonSlipLink(destination, source, length=length)
+    def __add_bidirectional_link(
+        self,
+        source: Slipnode,
+        destination: Slipnode,
+        length: float = 0.0,
+    ) -> None:
+        """
+        Adds a bidirectional link between two Slipnode instances.
 
-    def __addCategoryLink(self, source, destination, length):
+        This method creates a link from the source Slipnode to the destination Slipnode
+        and vice versa, effectively establishing a two-way connection. The length of the
+        link can be specified, with a default value of 0.0.
+
+        Parameters:
+            source (Slipnode): The starting node of the link.
+            destination (Slipnode): The ending node of the link.
+            length (float, optional): The length of the link. Defaults to 0.0.
+
+        Returns:
+            None
+        """
+        self.__add_non_slip_link(source, destination, length=length)
+        self.__add_non_slip_link(destination, source, length=length)
+
+    def __add_category_link(
+        self,
+        source: Slipnode,
+        destination: Slipnode,
+        length: float = 0.0,
+    ) -> None:
+        """
+        Adds a category link between two Slipnode instances.
+
+        Parameters:
+            source (Slipnode): The source Slipnode from which the link originates.
+            destination (Slipnode): The destination Slipnode to which the link points.
+            length (float, optional): The length of the link. Defaults to 0.0.
+
+        Returns:
+            None
+        """
         # noinspection PyArgumentEqualDefault
-        link = self.__addLink(source, destination, None, length)
+        link = self.__add_link(source, destination, None, length)
         source.category_links += [link]
 
-    def __addInstanceLink(self, source, destination, length=100.0):
-        categoryLength = source.conceptual_depth - destination.conceptual_depth
-        self.__addCategoryLink(destination, source, categoryLength)
+    def __add_instance_link(
+        self, source: Slipnode, destination: Slipnode, length: float = 100.0
+    ) -> None:
+        """
+        Adds an instance link between two Slipnode objects.
+
+        Parameters:
+            source (Slipnode): The source Slipnode from which the link originates.
+            destination (Slipnode): The destination Slipnode to which the link points.
+            length (float, optional): The length of the link. Defaults to 100.0.
+
+        Returns:
+            None: This method does not return a value.
+
+        Notes:
+            This method calculates the category length based on the conceptual depth
+            of the source and destination nodes and adds a category link before creating
+            the instance link.
+        """
+        category_length = source.conceptual_depth - destination.conceptual_depth
+        self.__add_category_link(destination, source, category_length)
         # noinspection PyArgumentEqualDefault
-        link = self.__addLink(source, destination, None, length)
+        link = self.__add_link(source, destination, None, length)
         source.instance_links += [link]
 
-    def __addPropertyLink(self, source, destination, length):
+    def __add_property_link(
+        self, source: Slipnode, destination: Slipnode, length: float
+    ) -> None:
+        """
+        Adds a property link between two Slipnode instances.
+
+        Parameters:
+            source (Slipnode): The source Slipnode from which the link originates.
+            destination (Slipnode): The destination Slipnode to which the link points.
+            length (float): The length of the property link.
+
+        Returns:
+            None
+        """
         # noinspection PyArgumentEqualDefault
-        link = self.__addLink(source, destination, None, length)
+        link = self.__add_link(source, destination, None, length)
         source.property_links += [link]
 
-    def __addOppositeLink(self, source, destination):
-        self.__addSlipLink(source, destination, label=self.opposite)
-        self.__addSlipLink(destination, source, label=self.opposite)
+    def __add_opposite_link(self, source: Slipnode, destination: Slipnode) -> None:
+        """
+        Adds an opposite link between two Slipnodes.
 
-    def __addNode(self, name, depth, length: float = 0.0):
+        This method creates a bidirectional link between the source and destination Slipnodes.
+        It adds a slip link from the source to the destination and another from the destination
+        back to the source, both labeled as 'opposite'.
+
+        Parameters:
+            source (Slipnode): The starting Slipnode for the link.
+            destination (Slipnode): The ending Slipnode for the link.
+
+        Returns:
+            None
+        """
+        self.__add_slip_link(source, destination, label=self.opposite)
+        self.__add_slip_link(destination, source, label=self.opposite)
+
+    def __add_node(self, name, depth, length: float = 0.0) -> Slipnode:
+        """
+        Adds a new Slipnode to the slipnet.
+
+        Parameters:
+            name (str): The name of the Slipnode to be added.
+            depth (int): The depth level of the Slipnode.
+            length (float, optional): The length associated with the Slipnode. Defaults to 0.0.
+
+        Returns:
+            Slipnode: The newly created Slipnode instance.
+        """
         slipnode = Slipnode(self, name, depth, length)
         self.slipnodes += [slipnode]
         return slipnode
 
-    def __link_items_to_their_neighbors(self, items):
+    def __link_items_to_their_neighbors(self, items) -> None:
+        """
+        Links each item in the provided list to its neighboring items.
+
+        This method iterates through a list of items and establishes non-slip links
+        between each item and its predecessor and successor. The links are created
+        using the `__add_non_slip_link` method, which is called twice for each
+        pair of neighboring items.
+
+        Parameters:
+            items (list): A list of items to be linked. It is expected that the list
+                          contains at least one item.
+
+        Returns:
+            None
+        """
         previous = items[0]
         for item in items[1:]:
-            self.__addNonSlipLink(previous, item, label=self.successor)
-            self.__addNonSlipLink(item, previous, label=self.predecessor)
+            self.__add_non_slip_link(previous, item, label=self.successor)
+            self.__add_non_slip_link(item, previous, label=self.predecessor)
             previous = item
