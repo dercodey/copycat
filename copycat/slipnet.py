@@ -518,7 +518,7 @@ class Slipnet(object):
         self.__add_slip_link(source, destination, label=self.opposite)
         self.__add_slip_link(destination, source, label=self.opposite)
 
-    def __add_node(self, name, depth, length: float = 0.0) -> Slipnode:
+    def __add_node(self, name: str, depth: float, length: float = 0.0) -> Slipnode:
         """
         Adds a new Slipnode to the slipnet.
 
@@ -534,7 +534,7 @@ class Slipnet(object):
         self.slipnodes += [slipnode]
         return slipnode
 
-    def __link_items_to_their_neighbors(self, items) -> None:
+    def __link_items_to_their_neighbors(self, items: List[Slipnode]) -> None:
         """
         Links each item in the provided list to its neighboring items.
 
