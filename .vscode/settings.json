@@ -8,6 +8,7 @@
         "Sliplink",
         "Slipnet",
         "Slipnode",
+        "slipnodes",
         "unclamp"
     ],
     "python.analysis.typeCheckingMode": "basic"
