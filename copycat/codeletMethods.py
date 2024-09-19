@@ -2,9 +2,9 @@ import inspect
 import logging
 
 from . import formulas
-from .workspaceFormulas import choose_directed_neighbor
-from .workspaceFormulas import choose_neighbor
-from .workspaceFormulas import choose_unmodified_object
+from .workspace_formulas import choose_directed_neighbor
+from .workspace_formulas import choose_neighbor
+from .workspace_formulas import choose_unmodified_object
 from .workspaceObject import WorkspaceObject
 from .letter import Letter
 from .replacement import Replacement
