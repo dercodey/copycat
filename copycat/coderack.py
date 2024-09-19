@@ -74,7 +74,7 @@ class Coderack(object):
         if codeletName == 'breaker':
             return 1.0
         if 'replacement' in codeletName:
-            if workspace.numberOfUnreplacedObjects() > 0:
+            if workspace.number_of_unreplaced_objects() > 0:
                 return 1.0
             return 0.0
         if 'rule' in codeletName:
@@ -82,11 +82,11 @@ class Coderack(object):
                 return 1.0
             return workspace.rule.totalWeakness() / 100.0
         if 'correspondence' in codeletName:
-            return workspace.interStringUnhappiness / 100.0
+            return workspace.inter_string_unhappiness / 100.0
         if 'description' in codeletName:
             # TODO: use entropy
             return (temperature.value() / 100.0) ** 2
-        return workspace.intraStringUnhappiness / 100.0
+        return workspace.intra_string_unhappiness / 100.0
 
     def howManyToPost(self, codeletName):
         random = self.ctx.random
@@ -99,19 +99,19 @@ class Coderack(object):
             return 1
         if 'rule' in codeletName:
             return 2
-        if 'group' in codeletName and not workspace.numberOfBonds():
+        if 'group' in codeletName and not workspace.number_of_bonds():
             return 0
         if 'replacement' in codeletName and workspace.rule:
             return 0
         number = 0
         if 'bond' in codeletName:
-            number = workspace.numberOfUnrelatedObjects()
+            number = workspace.number_of_unrelated_objects()
         if 'group' in codeletName:
-            number = workspace.numberOfUngroupedObjects()
+            number = workspace.number_of_ungrouped_objects()
         if 'replacement' in codeletName:
-            number = workspace.numberOfUnreplacedObjects()
+            number = workspace.number_of_unreplaced_objects()
         if 'correspondence' in codeletName:
-            number = workspace.numberOfUncorrespondingObjects()
+            number = workspace.number_of_uncorresponding_objects()
         if number < random.sqrt_blur(2.0):
             return 1
         if number < random.sqrt_blur(4.0):

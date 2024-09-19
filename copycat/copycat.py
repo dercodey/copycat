@@ -45,10 +45,10 @@ class Copycat(object):
         self.reporter.report_workspace(self.workspace)
 
     def update_workspace(self, currentTime):
-        self.workspace.updateEverything()
+        self.workspace.update_everything()
         self.coderack.updateCodelets()
         self.slipnet.update(self.random)
-        self.temperature.update(self.workspace.getUpdatedTemperature())
+        self.temperature.update(self.workspace.get_updated_temperature())
         self.lastUpdate = currentTime
         self.reporter.report_slipnet(self.slipnet)
 
@@ -56,7 +56,7 @@ class Copycat(object):
         if self.gui.app.primary.control.go:
             initial, modified, target = self.gui.app.primary.control.get_vars()
             self.gui.app.reset_with_strings(initial, modified, target)
-            self.workspace.resetWithStrings(initial, modified, target)
+            self.workspace.reset_with_strings(initial, modified, target)
             return True
         else:
             return False
@@ -76,10 +76,10 @@ class Copycat(object):
         self.slipnet.reset()
         self.temperature.reset() # TODO: use entropy
         self.workspace.reset()
-        while self.workspace.finalAnswer is None:
+        while self.workspace.final_answer is None:
             self.mainLoop()
         answer = {
-            'answer': self.workspace.finalAnswer,
+            'answer': self.workspace.final_answer,
             'temp': self.temperature.last_unclamped_value, # TODO: use entropy
             'time': self.coderack.codeletsRun,
         }
@@ -116,7 +116,7 @@ class Copycat(object):
         return answers
 
     def run(self, initial, modified, target, iterations):
-        self.workspace.resetWithStrings(initial, modified, target)
+        self.workspace.reset_with_strings(initial, modified, target)
         answers = {}
         formula = 'pbest'
         self.temperature.useAdj(formula)
@@ -139,6 +139,6 @@ class Copycat(object):
         return answers
 
     def run_forever(self, initial, modified, target):
-        self.workspace.resetWithStrings(initial, modified, target)
+        self.workspace.reset_with_strings(initial, modified, target)
         while True:
             self.runTrial()

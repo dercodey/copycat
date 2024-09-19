@@ -15,21 +15,26 @@ class WorkspaceString(object):
         self.intraStringUnhappiness = 0.0
 
         for position, c in enumerate(self.string.upper(), 1):
-            value = ord(c) - ord('A')
+            value = ord(c) - ord("A")
             letter = Letter(self, position, self.length)
-            letter.workspaceString = self
+            ## letter.workspaceString = self        ## TODO: check if this is needed
+            ## assert letter.workspaceString == letter.string
             letter.addDescription(slipnet.object_category, slipnet.letter)
             letter.addDescription(slipnet.letter_category, slipnet.letters[value])
             letter.describe(position, self.length)
-            workspace.buildDescriptions(letter)
+            workspace.build_descriptions(letter)
             self.letters += [letter]
 
     def __repr__(self):
-        return '<WorkspaceString: %s>' % self.string
+        return "<WorkspaceString: %s>" % self.string
 
     def __str__(self):
-        return '%s with %d letters, %d objects, %d bonds' % (
-            self.string, len(self.letters), len(self.objects), len(self.bonds))
+        return "%s with %d letters, %d objects, %d bonds" % (
+            self.string,
+            len(self.letters),
+            len(self.objects),
+            len(self.bonds),
+        )
 
     def __len__(self):
         return len(self.string)
@@ -39,13 +44,13 @@ class WorkspaceString(object):
 
     def updateRelativeImportance(self):
         """Update the normalised importance of all objects in the string."""
-        total = sum(o.rawImportance for o in self.objects)
+        total = sum(objekt.rawImportance for objekt in self.objects)
         if not total:
-            for o in self.objects:
-                o.relativeImportance = 0.0
+            for objekt in self.objects:
+                objekt.relativeImportance = 0.0
         else:
-            for o in self.objects:
-                o.relativeImportance = o.rawImportance / total
+            for objekt in self.objects:
+                objekt.relativeImportance = objekt.rawImportance / total
 
     def updateIntraStringUnhappiness(self):
         if not len(self.objects):

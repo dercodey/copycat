@@ -335,7 +335,7 @@ def rule_scout(ctx, codelet):
     # TODO: use entropy
     temperature = ctx.temperature
     workspace = ctx.workspace
-    assert workspace.numberOfUnreplacedObjects() == 0
+    assert workspace.number_of_unreplaced_objects() == 0
     changedObjects = [o for o in workspace.initial.objects if o.changed]
     # assert len(changedObjects) < 2
     # if there are no changed objects, propose a rule with no changes
@@ -426,8 +426,8 @@ def replacement_finder(ctx, codelet):
     ]
     assert moreLetters
     letterOfModifiedString = moreLetters[0]
-    initialAscii = ord(workspace.initialString[position - 1])
-    modifiedAscii = ord(workspace.modifiedString[position - 1])
+    initialAscii = ord(workspace.initial_string[position - 1])
+    modifiedAscii = ord(workspace.modified_string[position - 1])
     diff = initialAscii - modifiedAscii
     if abs(diff) < 2:
         relations = {0: slipnet.sameness, -1: slipnet.successor, 1: slipnet.predecessor}
@@ -920,7 +920,7 @@ def rule_builder(ctx, codelet):
     # fight against other rules
     if workspace.rule is not None:
         assert __structureVsStructure(rule, 1.0, workspace.rule, 1.0)
-    workspace.buildRule(rule)
+    workspace.build_rule(rule)
 
 
 def __getCutoffWeights(bondDensity):
@@ -957,7 +957,7 @@ def rule_translator(ctx, codelet):
     if cutoff >= temperature.actual_value:
         result = workspace.rule.buildTranslatedRule()
         if result is not None:
-            workspace.finalAnswer = result
+            workspace.final_answer = result
         else:
             temperature.clampUntil(coderack.codeletsRun + 100)
 
@@ -1192,5 +1192,5 @@ def correspondence_builder(ctx, codelet):
     if incompatibleGroup:
         incompatibleGroup.break_the_structure()
     if incompatibleRule:
-        workspace.breakRule()
+        workspace.break_rule()
     correspondence.buildCorrespondence()

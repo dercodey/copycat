@@ -6,12 +6,14 @@
         "codelets",
         "noshow",
         "objekt",
+        "reinitializes",
         "Sliplink",
         "Sliplinks",
         "Slipnet",
         "Slipnode",
         "slipnodes",
-        "unclamp"
+        "unclamp",
+        "uncorresponding"
     ],
     "python.analysis.typeCheckingMode": "basic"
 }

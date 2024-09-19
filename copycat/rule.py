@@ -142,7 +142,7 @@ class Rule(WorkspaceStructure):
             logging.debug('changed object = %s', changed)
             left = changed.leftIndex - 1
             right = changed.rightIndex
-            s = workspace.targetString
+            s = workspace.target_string
             changed_middle = self.__changeString(s[left:right])
             if changed_middle is None:
                 return None

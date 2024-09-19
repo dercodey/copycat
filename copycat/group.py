@@ -115,7 +115,7 @@ class Group(WorkspaceObject):
         self.string.objects += [self]
         for objekt in self.objectList:
             objekt.group = self
-        workspace.buildDescriptions(self)
+        workspace.build_descriptions(self)
         self.activateDescriptions()
 
     def activateDescriptions(self):

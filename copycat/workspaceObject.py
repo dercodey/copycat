@@ -46,7 +46,7 @@ class WorkspaceObject(WorkspaceStructure):
             if not self.containsDescription(description):
                 self.addDescription(description.descriptionType,
                                     description.descriptor)
-        workspace.buildDescriptions(self)
+        workspace.build_descriptions(self)
 
     def __calculateIntraStringHappiness(self):
         if self.spansString():
