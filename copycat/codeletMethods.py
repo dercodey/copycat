@@ -2,9 +2,9 @@ import inspect
 import logging
 
 from . import formulas
-from .workspaceFormulas import chooseDirectedNeighbor
-from .workspaceFormulas import chooseNeighbor
-from .workspaceFormulas import chooseUnmodifiedObject
+from .workspaceFormulas import choose_directed_neighbor
+from .workspaceFormulas import choose_neighbor
+from .workspaceFormulas import choose_unmodified_object
 from .workspaceObject import WorkspaceObject
 from .letter import Letter
 from .replacement import Replacement
@@ -63,7 +63,7 @@ def __getScoutSource(ctx, slipnode, relevanceMethod, typeName):
         logging.info("target string selected: %s for %s", workspace.target, typeName)
     else:
         logging.info("initial string selected: %s for %s", workspace.initial, typeName)
-    source = chooseUnmodifiedObject(ctx, "intraStringSalience", string.objects)
+    source = choose_unmodified_object(ctx, "intraStringSalience", string.objects)
     return source
 
 
@@ -194,7 +194,7 @@ def bottom_up_description_scout(ctx, codelet):
     coderack = ctx.coderack
     random = ctx.random
     workspace = ctx.workspace
-    chosenObject = chooseUnmodifiedObject(ctx, "totalSalience", workspace.objects)
+    chosenObject = choose_unmodified_object(ctx, "totalSalience", workspace.objects)
     assert chosenObject
     __showWhichStringObjectIsFrom(chosenObject)
     # choose relevant description by activation
@@ -219,7 +219,7 @@ def top_down_description_scout(ctx, codelet):
     random = ctx.random
     workspace = ctx.workspace
     descriptionType = codelet.arguments[0]
-    chosenObject = chooseUnmodifiedObject(ctx, "totalSalience", workspace.objects)
+    chosenObject = choose_unmodified_object(ctx, "totalSalience", workspace.objects)
     assert chosenObject
     __showWhichStringObjectIsFrom(chosenObject)
     descriptions = chosenObject.getPossibleDescriptions(descriptionType)
@@ -298,10 +298,10 @@ def bottom_up_bond_scout(ctx, codelet):
     coderack = ctx.coderack
     slipnet = ctx.slipnet
     workspace = ctx.workspace
-    source = chooseUnmodifiedObject(ctx, "intraStringSalience", workspace.objects)
+    source = choose_unmodified_object(ctx, "intraStringSalience", workspace.objects)
     assert source is not None
     __showWhichStringObjectIsFrom(source)
-    destination = chooseNeighbor(ctx, source)
+    destination = choose_neighbor(ctx, source)
     assert destination
     logging.info("destination: %s", destination)
     bondFacet = __chooseBondFacet(ctx, source, destination)
@@ -451,7 +451,7 @@ def top_down_bond_scout__category(ctx, codelet):
     source = __getScoutSource(
         ctx, category, formulas.local_bond_category_relevance, "bond"
     )
-    destination = chooseNeighbor(ctx, source)
+    destination = choose_neighbor(ctx, source)
     logging.info("source: %s, destination: %s", source, destination)
     assert destination
     bondFacet = __chooseBondFacet(ctx, source, destination)
@@ -494,7 +494,7 @@ def top_down_bond_scout__direction(ctx, codelet):
     source = __getScoutSource(
         ctx, direction, formulas.local_direction_category_relevance, "bond"
     )
-    destination = chooseDirectedNeighbor(ctx, source, direction)
+    destination = choose_directed_neighbor(ctx, source, direction)
     assert destination
     logging.info("to object: %s", destination)
     bondFacet = __chooseBondFacet(ctx, source, destination)
@@ -967,11 +967,11 @@ def bottom_up_correspondence_scout(ctx, codelet):
     coderack = ctx.coderack
     slipnet = ctx.slipnet
     workspace = ctx.workspace
-    objectFromInitial = chooseUnmodifiedObject(
+    objectFromInitial = choose_unmodified_object(
         ctx, "interStringSalience", workspace.initial.objects
     )
     assert objectFromInitial is not None
-    objectFromTarget = chooseUnmodifiedObject(
+    objectFromTarget = choose_unmodified_object(
         ctx, "interStringSalience", workspace.target.objects
     )
     assert objectFromTarget is not None
@@ -1025,7 +1025,7 @@ def important_object_correspondence_scout(ctx, codelet):
     # TODO: use entropy
     temperature = ctx.temperature
     workspace = ctx.workspace
-    objectFromInitial = chooseUnmodifiedObject(
+    objectFromInitial = choose_unmodified_object(
         ctx, "relativeImportance", workspace.initial.objects
     )
     assert objectFromInitial is not None
@@ -1045,7 +1045,7 @@ def important_object_correspondence_scout(ctx, codelet):
             if description.descriptor == initialDescriptor:
                 targetCandidates += [objekt]
     assert targetCandidates
-    objectFromTarget = chooseUnmodifiedObject(
+    objectFromTarget = choose_unmodified_object(
         ctx, "interStringSalience", targetCandidates
     )
     assert objectFromInitial.spansString() == objectFromTarget.spansString()
