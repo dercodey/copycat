@@ -20,7 +20,7 @@ from . import formulas
 from .bond import Bond
 from .correspondence import Correspondence
 from .letter import Letter
-from .workspaceString import WorkspaceString
+from .workspace_string import WorkspaceString
 
 
 def __adjust_unhappiness(values: Iterable[float]) -> float:
@@ -273,13 +273,13 @@ class Workspace(object):
         for obj in self.objects:
             obj.updateValue()
         if self.initial is not None:
-            self.initial.updateRelativeImportance()
+            self.initial.update_relative_importance()
         if self.target is not None:
-            self.target.updateRelativeImportance()
+            self.target.update_relative_importance()
         if self.initial is not None:
-            self.initial.updateIntraStringUnhappiness()
+            self.initial.update_intra_string_unhappiness()
         if self.target is not None:
-            self.target.updateIntraStringUnhappiness()
+            self.target.update_intra_string_unhappiness()
 
     # TODO: use entropy
     def get_updated_temperature(self) -> float:

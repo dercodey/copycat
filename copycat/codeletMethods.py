@@ -43,8 +43,8 @@ def __getScoutSource(ctx, slipnode, relevanceMethod, typeName):
     workspace = ctx.workspace
     initialRelevance = relevanceMethod(workspace.initial, slipnode)
     targetRelevance = relevanceMethod(workspace.target, slipnode)
-    initialUnhappiness = workspace.initial.intraStringUnhappiness
-    targetUnhappiness = workspace.target.intraStringUnhappiness
+    initialUnhappiness = workspace.initial.intra_string_unhappiness
+    targetUnhappiness = workspace.target.intra_string_unhappiness
     logging.info(
         "initial : relevance = %d, unhappiness=%d",
         initialRelevance,
@@ -835,7 +835,7 @@ def group_builder(ctx, codelet):
     # update strength value of the group
     group = codelet.arguments[0]
     __showWhichStringObjectIsFrom(group)
-    equivalent = group.string.equivalentGroup(group)
+    equivalent = group.string.equivalent_group(group)
     if equivalent:
         logging.info("already exists...activate descriptors & fizzle")
         group.activateDescriptions()
