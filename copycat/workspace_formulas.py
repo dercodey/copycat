@@ -24,7 +24,7 @@ Functions:
 from typing import List
 
 from .slipnode import Slipnode
-from .workspaceObject import WorkspaceObject
+from .workspace_object import WorkspaceObject
 
 
 def __choose_object_from_list(

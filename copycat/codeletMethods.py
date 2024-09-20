@@ -5,7 +5,7 @@ from . import formulas
 from .workspace_formulas import choose_directed_neighbor
 from .workspace_formulas import choose_neighbor
 from .workspace_formulas import choose_unmodified_object
-from .workspaceObject import WorkspaceObject
+from .workspace_object import WorkspaceObject
 from .letter import Letter
 from .replacement import Replacement
 from .group import Group

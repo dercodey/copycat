@@ -1,5 +1,5 @@
 from .description import Description
-from .workspaceObject import WorkspaceObject
+from .workspace_object import WorkspaceObject
 from . import formulas
 
 

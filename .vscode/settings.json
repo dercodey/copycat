@@ -13,6 +13,7 @@
         "Slipnode",
         "slipnodes",
         "unclamp",
+        "uncorresponded",
         "uncorresponding"
     ],
     "python.analysis.typeCheckingMode": "basic"
