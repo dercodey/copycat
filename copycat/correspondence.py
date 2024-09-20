@@ -1,7 +1,7 @@
 from .conceptMapping import ConceptMapping
 from .group import Group
 from .letter import Letter
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 from . import formulas
 
 
@@ -108,18 +108,18 @@ class Correspondence(WorkspaceStructure):
         if isinstance(self.objectFromTarget, Letter):
             if self.objectFromTarget.spansString():
                 return 100.0
-        total = sum(c.totalStrength for c in workspace.correspondences()
+        total = sum(c.total_strength for c in workspace.correspondences()
                     if self.supporting(c))
         return min(total, 100.0)
 
-    def updateInternalStrength(self):
+    def update_internal_strength(self):
         """A function of how many concept mappings there are
 
         Also considered: their strength and how well they cohere"""
         distinguishingMappings = self.relevantDistinguishingConceptMappings()
         numberOfConceptMappings = len(distinguishingMappings)
         if numberOfConceptMappings < 1:
-            self.internalStrength = 0.0
+            self.internal_strength = 0.0
             return
         totalStrength = sum(m.strength() for m in distinguishingMappings)
         averageStrength = totalStrength / numberOfConceptMappings
@@ -135,10 +135,10 @@ class Correspondence(WorkspaceStructure):
             internalCoherenceFactor = 1.0
         internalStrength = (averageStrength * internalCoherenceFactor *
                             numberOfConceptMappingsFactor)
-        self.internalStrength = min(internalStrength, 100.0)
+        self.internal_strength = min(internalStrength, 100.0)
 
-    def updateExternalStrength(self):
-        self.externalStrength = self.support()
+    def update_external_strength(self):
+        self.external_strength = self.support()
 
     def internallyCoherent(self):
         """Whether any pair of distinguishing mappings support each other"""

@@ -80,12 +80,12 @@ def __structureVsStructure(structure1, weight1, structure2, weight2):
     random = ctx.random
     # TODO: use entropy
     temperature = ctx.temperature
-    structure1.updateStrength()
-    structure2.updateStrength()
+    structure1.update_strength()
+    structure2.update_strength()
     # TODO: use entropy
-    weightedStrength1 = temperature.getAdjustedValue(structure1.totalStrength * weight1)
+    weightedStrength1 = temperature.getAdjustedValue(structure1.total_strength * weight1)
     # TODO: use entropy
-    weightedStrength2 = temperature.getAdjustedValue(structure2.totalStrength * weight2)
+    weightedStrength2 = temperature.getAdjustedValue(structure2.total_strength * weight2)
     return random.weighted_greater_than(weightedStrength1, weightedStrength2)
 
 
@@ -160,7 +160,7 @@ def breaker(ctx, codelet):
 
     for structure in breakObjects:
         breakProbability = temperature.getAdjustedProbability(
-            structure.totalStrength / 100.0
+            structure.total_strength / 100.0
         )
         if random.coin_flip(breakProbability):
             return
@@ -237,8 +237,8 @@ def description_strength_tester(ctx, codelet):
     temperature = ctx.temperature
     description = codelet.arguments[0]
     description.descriptor.buffer = 100.0
-    description.updateStrength()
-    strength = description.totalStrength
+    description.update_strength()
+    strength = description.total_strength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
     assert random.coin_flip(probability)
@@ -401,11 +401,11 @@ def rule_strength_tester(ctx, codelet):
     # TODO: use entropy
     temperature = ctx.temperature
     rule = codelet.arguments[0]
-    rule.updateStrength()
+    rule.update_strength()
     # TODO: use entropy
-    probability = temperature.getAdjustedProbability(rule.totalStrength / 100.0)
+    probability = temperature.getAdjustedProbability(rule.total_strength / 100.0)
     if random.coin_flip(probability):
-        coderack.newCodelet("rule-builder", rule.totalStrength, [rule])
+        coderack.newCodelet("rule-builder", rule.total_strength, [rule])
 
 
 @codelet("replacement-finder")
@@ -524,8 +524,8 @@ def bond_strength_tester(ctx, codelet):
     temperature = ctx.temperature
     bond = codelet.arguments[0]
     __showWhichStringObjectIsFrom(bond)
-    bond.updateStrength()
-    strength = bond.totalStrength
+    bond.update_strength()
+    strength = bond.total_strength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
     logging.info("bond strength = %d for %s", strength, bond)
@@ -542,7 +542,7 @@ def bond_builder(ctx, codelet):
     workspace = ctx.workspace
     bond = codelet.arguments[0]
     __showWhichStringObjectIsFrom(bond)
-    bond.updateStrength()
+    bond.update_strength()
     assert bond.source in workspace.objects or bond.destination in workspace.objects
     for stringBond in bond.string.bonds:
         if bond.sameNeighbors(stringBond) and bond.sameCategories(stringBond):
@@ -816,8 +816,8 @@ def group_strength_tester(ctx, codelet):
     # update strength value of the group
     group = codelet.arguments[0]
     __showWhichStringObjectIsFrom(group)
-    group.updateStrength()
-    strength = group.totalStrength
+    group.update_strength()
+    strength = group.total_strength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
     if random.coin_flip(probability):
@@ -868,7 +868,7 @@ def group_builder(ctx, codelet):
                 incompatibleBonds += [rightBond]
             next_object = objekt
     # if incompatible bonds exist - fight
-    group.updateStrength()
+    group.update_strength()
     assert __fightIncompatibles(incompatibleBonds, group, "bonds", 1.0, 1.0)
     # fight incompatible groups
     # fight all groups containing these objects
@@ -915,8 +915,8 @@ def rule_builder(ctx, codelet):
     if rule.ruleEqual(workspace.rule):
         rule.activateRuleDescriptions()
         return
-    rule.updateStrength()
-    assert rule.totalStrength
+    rule.update_strength()
+    assert rule.total_strength
     # fight against other rules
     if workspace.rule is not None:
         assert __structureVsStructure(rule, 1.0, workspace.rule, 1.0)
@@ -1105,8 +1105,8 @@ def correspondence_strength_tester(ctx, codelet):
         or correspondence.flipTargetObject
         and not workspace.target.equivalentGroup(objectFromTarget.flipped_version())
     )
-    correspondence.updateStrength()
-    strength = correspondence.totalStrength
+    correspondence.update_strength()
+    strength = correspondence.total_strength
     # TODO: use entropy
     probability = temperature.getAdjustedProbability(strength / 100.0)
     if random.coin_flip(probability):

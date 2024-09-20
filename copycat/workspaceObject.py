@@ -1,6 +1,6 @@
 from .description import Description
 from .formulas import weighted_average
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 
 class WorkspaceObject(WorkspaceStructure):
     # pylint: disable=too-many-instance-attributes
@@ -52,8 +52,8 @@ class WorkspaceObject(WorkspaceStructure):
         if self.spansString():
             return 100.0
         if self.group:
-            return self.group.totalStrength
-        bondStrength = sum(bond.totalStrength for bond in self.bonds)
+            return self.group.total_strength
+        bondStrength = sum(bond.total_strength for bond in self.bonds)
         return bondStrength / 6.0
 
     def __calculateRawImportance(self):
@@ -79,7 +79,7 @@ class WorkspaceObject(WorkspaceStructure):
 
         interStringHappiness = 0.0
         if self.correspondence:
-            interStringHappiness = self.correspondence.totalStrength
+            interStringHappiness = self.correspondence.total_strength
         self.interStringUnhappiness = 100.0 - interStringHappiness
 
         averageHappiness = (intraStringHappiness + interStringHappiness) / 2

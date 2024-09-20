@@ -1,4 +1,4 @@
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 
 
 class Description(WorkspaceStructure):
@@ -21,11 +21,11 @@ class Description(WorkspaceStructure):
             s += ' in target string'
         return s
 
-    def updateInternalStrength(self):
-        self.internalStrength = self.descriptor.conceptual_depth
+    def update_internal_strength(self):
+        self.internal_strength = self.descriptor.conceptual_depth
 
-    def updateExternalStrength(self):
-        self.externalStrength = (self.localSupport() +
+    def update_external_strength(self):
+        self.external_strength = (self.localSupport() +
                                  self.descriptionType.activation) / 2
 
     def localSupport(self):

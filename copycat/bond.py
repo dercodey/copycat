@@ -1,4 +1,4 @@
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 
 
 class Bond(WorkspaceStructure):
@@ -113,7 +113,7 @@ class Bond(WorkspaceStructure):
                     incompatibles += [correspondence]
         return incompatibles
 
-    def updateInternalStrength(self):
+    def update_internal_strength(self):
         slipnet = self.ctx.slipnet
         # bonds between objects of same type(ie. letter or group) are
         # stronger than bonds between different types
@@ -135,10 +135,10 @@ class Bond(WorkspaceStructure):
             * facetFactor
             * self.category.bond_degree_of_association(),
         )
-        self.internalStrength = strength
+        self.internal_strength = strength
 
-    def updateExternalStrength(self):
-        self.externalStrength = 0.0
+    def update_external_strength(self):
+        self.external_strength = 0.0
         supporters = self.numberOfLocalSupportingBonds()
         if supporters > 0.0:
             density = self.localDensity() / 100.0
@@ -146,7 +146,7 @@ class Bond(WorkspaceStructure):
             supportFactor = 0.6 ** (1.0 / supporters**3)
             supportFactor = max(1.0, supportFactor)
             strength = supportFactor * density
-            self.externalStrength = strength
+            self.external_strength = strength
 
     def numberOfLocalSupportingBonds(self):
         return sum(

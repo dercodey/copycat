@@ -1,4 +1,4 @@
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 
 
 class Replacement(WorkspaceStructure):

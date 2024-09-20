@@ -269,7 +269,7 @@ class Workspace(object):
             `updateIntraStringUnhappiness` on it.
         """
         for structure in self.structures:
-            structure.updateStrength()
+            structure.update_strength()
         for obj in self.objects:
             obj.updateValue()
         if self.initial is not None:
@@ -300,8 +300,8 @@ class Workspace(object):
         self.calculate_inter_string_unhappiness()
         self.calculate_total_unhappiness()
         if self.rule:
-            self.rule.updateStrength()
-            rule_weakness = 100.0 - self.rule.totalStrength
+            self.rule.update_strength()
+            rule_weakness = 100.0 - self.rule.total_strength
         else:
             rule_weakness = 100.0
         return formulas.weighted_average(

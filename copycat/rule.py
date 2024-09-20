@@ -1,7 +1,7 @@
 import logging
 
 
-from .workspaceStructure import WorkspaceStructure
+from .workspace_structure import WorkspaceStructure
 from . import formulas
 
 
@@ -20,13 +20,13 @@ class Rule(WorkspaceStructure):
             self.facet.name, self.descriptor.name,
             self.category.name, self.relation.name)
 
-    def updateExternalStrength(self):
-        self.externalStrength = self.internalStrength
+    def update_external_strength(self):
+        self.external_strength = self.internal_strength
 
-    def updateInternalStrength(self):
+    def update_internal_strength(self):
         workspace = self.ctx.workspace
         if not (self.descriptor and self.relation):
-            self.internalStrength = 50.0
+            self.internal_strength = 50.0
             return
         averageDepth = (self.descriptor.conceptual_depth +
                         self.relation.conceptual_depth) / 2.0
@@ -42,7 +42,7 @@ class Rule(WorkspaceStructure):
             slippages = workspace.slippages()
             slipnode = self.descriptor.apply_slippages(slippages)
             if not targetObject.described(slipnode):
-                self.internalStrength = 0.0
+                self.internal_strength = 0.0
                 return
             sharedDescriptorTerm = 100.0
         conceptual_height = (100.0 - self.descriptor.conceptual_depth) / 10.0 # LSaldyt: 10?
@@ -52,9 +52,9 @@ class Rule(WorkspaceStructure):
         weights = ((depthDifference, 12),                          # LSaldyt: ???
                    (averageDepth, 18),                             # ????
                    (sharedDescriptorTerm, sharedDescriptorWeight)) # 12 and 18 can be reduced to 2 and 3, depending on sharedDescriptorWeight
-        self.internalStrength = formulas.weighted_average(weights)
-        if self.internalStrength > 100.0: # LSaldyt: A better formula wouldn't need to do this.
-            self.internalStrength = 100.0
+        self.internal_strength = formulas.weighted_average(weights)
+        if self.internal_strength > 100.0: # LSaldyt: A better formula wouldn't need to do this.
+            self.internal_strength = 100.0
 
     def ruleEqual(self, other):
         if not other:

@@ -80,7 +80,7 @@ class Coderack(object):
         if 'rule' in codeletName:
             if not workspace.rule:
                 return 1.0
-            return workspace.rule.totalWeakness() / 100.0
+            return workspace.rule.total_weakness() / 100.0
         if 'correspondence' in codeletName:
             return workspace.inter_string_unhappiness / 100.0
         if 'description' in codeletName:
@@ -189,7 +189,7 @@ class Coderack(object):
             the degree of conceptual-depth of the descriptions in the rule
         """
         rule = Rule(self.ctx, facet, description, category, relation)
-        rule.updateStrength()
+        rule.update_strength()
         if description and relation:
             averageDepth = (description.conceptual_depth + relation.conceptual_depth) / 2.0
             urgency = 100.0 * math.sqrt(averageDepth / 100.0)
